@@ -15,8 +15,10 @@ create table if not exists public.formation_candidatures (
   telephone     text          check (char_length(telephone) <= 40),
   reseau        text          check (char_length(reseau) <= 120),
 
-  -- Profil de trading
-  experience    text          check (char_length(experience) <= 80),
+  -- Profil
+  age           text          check (char_length(age) <= 40),
+  situation     text          check (char_length(situation) <= 40),
+  experience    text          check (char_length(experience) <= 120),
   marches       text          check (char_length(marches) <= 80),
   capital       text          check (char_length(capital) <= 80),
   disponibilite text          check (char_length(disponibilite) <= 80),
@@ -52,6 +54,11 @@ create policy "candidature publique"
   for insert
   to anon
   with check (true);
+
+-- ── Table déjà créée avant l'ajout de l'âge et de la situation ? ──
+-- Exécute uniquement ces deux lignes, elles ne cassent rien :
+alter table public.formation_candidatures add column if not exists age text;
+alter table public.formation_candidatures add column if not exists situation text;
 
 -- ═══════════════════════════════════════════════════════════
 -- OPTIONNEL — recevoir un email à chaque candidature

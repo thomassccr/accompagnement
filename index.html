@@ -452,6 +452,26 @@ window.__phFallback = function (img, path) {
   .fld.err .err-msg { display:block; }
   /* Piège à robots : invisible pour les humains */
   .hp { position:absolute; left:-9999px; width:1px; height:1px; opacity:0; }
+  /* ── Réponses en boutons cliquables plutôt qu'en liste déroulante ──
+     Un choix se fait en un geste, et toutes les options restent visibles. */
+  .opts { display:flex; flex-direction:column; gap:9px; }
+  .opt { display:block; cursor:pointer; }
+  .opt input { position:absolute; opacity:0; width:0; height:0; }
+  .opt span {
+    display:block; padding:14px 17px; border-radius:12px;
+    border:1px solid rgba(255,255,255,0.11); background:rgba(255,255,255,0.04);
+    font-size:14.5px; line-height:1.4; color:#c8c4be;
+    transition:border-color .16s, background .16s, color .16s, transform .16s;
+  }
+  .opt:hover span { border-color:rgba(255,255,255,0.26); background:rgba(255,255,255,0.07); color:#e8e4de; }
+  .opt input:checked + span {
+    border-color:#3d8ef0; background:rgba(61,142,240,0.13); color:#fff;
+    box-shadow:0 6px 22px rgba(61,142,240,.16);
+  }
+  .opt input:focus-visible + span { box-shadow:0 0 0 3px rgba(61,142,240,.28); }
+  .opt:active span { transform:scale(.995); }
+  .fld.err .opts .opt span { border-color:rgba(239,107,107,.42); }
+
   /* ── Panneau de candidature : question à gauche, visuel à droite ── */
   .apply-split {
     display:grid; grid-template-columns:1.08fr .92fr; align-items:stretch;
@@ -618,6 +638,264 @@ window.__phFallback = function (img, path) {
     </div>
   </div>
 </header>
+
+<!-- ══════════════ CANDIDATURE ══════════════ -->
+<section class="apply" id="candidature">
+  <div class="wrap">
+    <div class="rv center">
+      <div class="k">Candidature</div>
+      <h2 class="sec">Parle-moi de toi.</h2>
+      <p class="sec-sub">
+        Cinq minutes à remplir, une réponse sous 48 h. Aucun paiement à cette étape —
+        juste un appel si ton profil correspond.
+      </p>
+    </div>
+
+    <div class="apply-card rv">
+      <div class="apply-split" id="apply-split">
+        <div class="apply-left">
+      <form class="frm" id="apply-form" novalidate>
+        <!-- Piège à robots -->
+        <div class="hp" aria-hidden="true">
+          <label for="site-web">Ne pas remplir</label>
+          <input type="text" id="site-web" name="site-web" tabindex="-1" autocomplete="off">
+        </div>
+
+        <div class="steps-head">
+          <div class="steps-bar"><div class="steps-fill" id="steps-fill"></div></div>
+          <div class="steps-meta"><span class="steps-count" id="steps-count">1 / 13</span></div>
+        </div>
+
+        <div class="step-pane on">
+          <div class="q-head"><h3 class="q-title">Ton prénom et ton âge</h3></div>
+          <div class="fld full">
+            <label for="f-prenom">Prénom <span class="req">*</span></label>
+            <input type="text" id="f-prenom" name="prenom" autocomplete="given-name" placeholder="Indique ta réponse ici…" required>
+            <span class="err-msg">Indique ton prénom.</span>
+          </div>
+          <div class="fld full">
+            <label>Âge <span class="req">*</span></label>
+            <div class="opts" role="radiogroup" aria-label="Âge">
+              <label class="opt"><input type="radio" name="age" value="-18 ans" required><span>-18 ans</span></label>
+              <label class="opt"><input type="radio" name="age" value="18-24 ans"><span>18-24 ans</span></label>
+              <label class="opt"><input type="radio" name="age" value="25-30 ans"><span>25-30 ans</span></label>
+              <label class="opt"><input type="radio" name="age" value="+30 ans"><span>+30 ans</span></label>
+            </div>
+            <span class="err-msg">Choisis une tranche d'âge.</span>
+          </div>
+        </div>
+
+        <div class="step-pane">
+          <div class="q-head">
+            <h3 class="q-title">Sur quelle adresse mail je peux te contacter ?</h3>
+            <p class="q-hint">Aucun spam — uniquement pour te répondre sous 48 h.</p>
+          </div>
+          <div class="fld full">
+            <label for="f-email">Email <span class="req">*</span></label>
+            <input type="email" id="f-email" name="email" autocomplete="email" placeholder="nom@exemple.com" required>
+            <span class="err-msg">Cet email n'a pas l'air valide.</span>
+          </div>
+        </div>
+
+        <div class="step-pane">
+          <div class="q-head">
+            <h3 class="q-title">Sur quel numéro je peux te joindre ?</h3>
+            <p class="q-hint">Facultatif — mais ça accélère beaucoup la prise de rendez-vous.</p>
+          </div>
+          <div class="fld full">
+            <label for="f-tel">Téléphone / WhatsApp</label>
+            <input type="tel" id="f-tel" name="telephone" autocomplete="tel" placeholder="+33 6 12 34 56 78">
+          </div>
+          <div class="fld full">
+            <label for="f-reseau">Ou ton Instagram, Discord, Telegram</label>
+            <input type="text" id="f-reseau" name="reseau" placeholder="@ton_pseudo">
+          </div>
+        </div>
+
+        <div class="step-pane">
+          <div class="q-head"><h3 class="q-title">Aujourd'hui, t'en es où dans le trading ?</h3></div>
+          <div class="fld full">
+            <div class="opts" role="radiogroup" aria-label="Niveau">
+              <label class="opt"><input type="radio" name="experience" value="Je viens de découvrir et je veux me lancer" required><span>Je viens de découvrir et je veux me lancer</span></label>
+              <label class="opt"><input type="radio" name="experience" value="Je me suis renseigné mais je n'ai jamais tradé en réel"><span>Je me suis renseigné mais je n'ai jamais tradé en réel</span></label>
+              <label class="opt"><input type="radio" name="experience" value="Je trade en réel mais sans méthode claire"><span>Je trade en réel mais sans méthode claire</span></label>
+              <label class="opt"><input type="radio" name="experience" value="J'ai une méthode mais je manque de régularité"><span>J'ai une méthode mais je manque de régularité</span></label>
+              <label class="opt"><input type="radio" name="experience" value="Je suis déjà financé et je veux passer un cap"><span>Je suis déjà financé et je veux passer un cap</span></label>
+            </div>
+            <span class="err-msg">Sélectionne une réponse.</span>
+          </div>
+        </div>
+
+        <div class="step-pane">
+          <div class="q-head"><h3 class="q-title">Qu'est-ce que tu trades ?</h3></div>
+          <div class="fld full">
+            <div class="opts" role="radiogroup" aria-label="Marchés">
+              <label class="opt"><input type="radio" name="marches" value="Forex" required><span>Forex</span></label>
+              <label class="opt"><input type="radio" name="marches" value="Indices"><span>Indices</span></label>
+              <label class="opt"><input type="radio" name="marches" value="Futures"><span>Futures</span></label>
+              <label class="opt"><input type="radio" name="marches" value="Actions"><span>Actions</span></label>
+              <label class="opt"><input type="radio" name="marches" value="Crypto"><span>Crypto</span></label>
+              <label class="opt"><input type="radio" name="marches" value="Un peu de tout"><span>Un peu de tout</span></label>
+            </div>
+            <span class="err-msg">Sélectionne une réponse.</span>
+          </div>
+        </div>
+
+        <div class="step-pane">
+          <div class="q-head">
+            <h3 class="q-title">Où en est ton compte ?</h3>
+            <p class="q-hint">Sois honnête : ça ne disqualifie personne, ça me sert à préparer l'appel.</p>
+          </div>
+          <div class="fld full">
+            <div class="opts" role="radiogroup" aria-label="Compte">
+              <label class="opt"><input type="radio" name="capital" value="Compte démo uniquement" required><span>Compte démo uniquement</span></label>
+              <label class="opt"><input type="radio" name="capital" value="Compte perso — moins de 1 000 €"><span>Compte perso — moins de 1 000 €</span></label>
+              <label class="opt"><input type="radio" name="capital" value="Compte perso — 1 000 à 10 000 €"><span>Compte perso — 1 000 à 10 000 €</span></label>
+              <label class="opt"><input type="radio" name="capital" value="Compte perso — plus de 10 000 €"><span>Compte perso — plus de 10 000 €</span></label>
+              <label class="opt"><input type="radio" name="capital" value="Challenge prop firm en cours"><span>Challenge prop firm en cours</span></label>
+              <label class="opt"><input type="radio" name="capital" value="Compte prop firm financé"><span>Compte prop firm financé</span></label>
+            </div>
+            <span class="err-msg">Sélectionne une réponse.</span>
+          </div>
+        </div>
+
+        <div class="step-pane">
+          <div class="q-head"><h3 class="q-title">Quelle est ta situation actuelle ?</h3></div>
+          <div class="fld full">
+            <div class="opts" role="radiogroup" aria-label="Situation">
+              <label class="opt"><input type="radio" name="situation" value="Étudiant" required><span>Étudiant</span></label>
+              <label class="opt"><input type="radio" name="situation" value="Salarié"><span>Salarié</span></label>
+              <label class="opt"><input type="radio" name="situation" value="En recherche"><span>En recherche</span></label>
+              <label class="opt"><input type="radio" name="situation" value="Entrepreneur"><span>Entrepreneur</span></label>
+              <label class="opt"><input type="radio" name="situation" value="Autre"><span>Autre</span></label>
+            </div>
+            <span class="err-msg">Sélectionne une réponse.</span>
+          </div>
+        </div>
+
+        <div class="step-pane">
+          <div class="q-head">
+            <h3 class="q-title">Combien de temps tu peux y consacrer ?</h3>
+            <p class="q-hint">En dessous de 5 h par semaine, le format ne fonctionne pas — autant le savoir maintenant.</p>
+          </div>
+          <div class="fld full">
+            <div class="opts" role="radiogroup" aria-label="Disponibilité">
+              <label class="opt"><input type="radio" name="disponibilite" value="Moins de 5 h" required><span>Moins de 5 h par semaine</span></label>
+              <label class="opt"><input type="radio" name="disponibilite" value="5 à 10 h"><span>5 à 10 h par semaine</span></label>
+              <label class="opt"><input type="radio" name="disponibilite" value="10 à 20 h"><span>10 à 20 h par semaine</span></label>
+              <label class="opt"><input type="radio" name="disponibilite" value="Plus de 20 h"><span>Plus de 20 h par semaine</span></label>
+            </div>
+            <span class="err-msg">Sélectionne une réponse.</span>
+          </div>
+        </div>
+
+        <div class="step-pane">
+          <div class="q-head">
+            <h3 class="q-title">Tu veux en être où dans 6 mois ?</h3>
+            <p class="q-hint">Un objectif précis vaut mieux qu'un grand rêve. Deux lignes suffisent.</p>
+          </div>
+          <div class="fld full">
+            <label for="f-objectif">Ton objectif <span class="req">*</span></label>
+            <textarea id="f-objectif" name="objectif" placeholder="Ex. : valider un challenge FTMO 50k et sortir un premier retrait sans cramer le compte." required></textarea>
+            <span class="err-msg">Décris ton objectif en quelques mots.</span>
+          </div>
+        </div>
+
+        <div class="step-pane">
+          <div class="q-head">
+            <h3 class="q-title">Qu'est-ce qui te bloque le plus ?</h3>
+            <p class="q-hint">C'est la réponse que je lis en premier. Plus tu es franc, plus l'appel sert à quelque chose.</p>
+          </div>
+          <div class="fld full">
+            <label for="f-blocage">Ton blocage <span class="req">*</span></label>
+            <textarea id="f-blocage" name="blocage" placeholder="Discipline, gestion du risque, manque de méthode, gestion des émotions…" required></textarea>
+            <span class="err-msg">Dis-m'en un peu plus.</span>
+          </div>
+        </div>
+
+        <div class="step-pane">
+          <div class="q-head">
+            <h3 class="q-title">Quel format t'intéresse ?</h3>
+            <p class="q-hint">Rien n'est figé — on en reparle pendant l'appel.</p>
+          </div>
+          <div class="fld full">
+            <div class="opts" role="radiogroup" aria-label="Format">
+              <label class="opt"><input type="radio" name="format" value="Je ne sais pas encore"><span>Je ne sais pas encore</span></label>
+              <label class="opt"><input type="radio" name="format" value="Audit flash"><span>Audit flash</span></label>
+              <label class="opt"><input type="radio" name="format" value="Accompagnement 12 semaines"><span>Accompagnement 12 semaines</span></label>
+              <label class="opt"><input type="radio" name="format" value="Mentorat long terme"><span>Mentorat long terme</span></label>
+            </div>
+          </div>
+        </div>
+
+        <div class="step-pane">
+          <div class="q-head"><h3 class="q-title">Comment tu m'as connu ?</h3></div>
+          <div class="fld full">
+            <div class="opts" role="radiogroup" aria-label="Provenance">
+              <label class="opt"><input type="radio" name="source" value="Instagram"><span>Instagram</span></label>
+              <label class="opt"><input type="radio" name="source" value="TikTok"><span>TikTok</span></label>
+              <label class="opt"><input type="radio" name="source" value="YouTube"><span>YouTube</span></label>
+              <label class="opt"><input type="radio" name="source" value="Discord / Telegram"><span>Discord / Telegram</span></label>
+              <label class="opt"><input type="radio" name="source" value="Bouche à oreille"><span>Bouche à oreille</span></label>
+              <label class="opt"><input type="radio" name="source" value="Autre"><span>Autre</span></label>
+            </div>
+          </div>
+        </div>
+
+        <div class="step-pane">
+          <div class="q-head">
+            <h3 class="q-title">Dernière étape.</h3>
+            <p class="q-hint">Le bouton Retour te ramène en arrière sans rien perdre.</p>
+          </div>
+          <div class="consent">
+            <input type="checkbox" id="f-consent" name="consent" required>
+            <label for="f-consent">
+              J'accepte que mes réponses soient utilisées pour étudier ma candidature et me recontacter.
+              J'ai compris que le trading comporte un risque de perte en capital et qu'aucun résultat n'est garanti.
+              (<a href="confidentialite.html">politique de confidentialité</a>)
+            </label>
+          </div>
+        </div>
+
+        <div class="frm-alert" id="frm-alert">
+          <span id="frm-alert-txt"></span>
+        </div>
+
+        <div class="frm-actions">
+          <div class="frm-nav">
+            <button class="btn btn-outline" type="button" id="frm-prev" hidden>Retour</button>
+            <button class="btn btn-primary" type="button" id="frm-next">
+              Continuer
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+            </button>
+            <button class="btn btn-primary" type="submit" id="frm-submit" hidden>
+              <span id="frm-submit-label">Envoyer ma candidature</span>
+              <svg id="frm-submit-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+            </button>
+          </div>
+          <div class="frm-note">Aucun paiement à cette étape · Réponse sous 48 h · Tes réponses restent confidentielles</div>
+        </div>
+      </form>
+
+        </div><!-- /apply-left -->
+        <div class="apply-right" aria-hidden="true">
+          <img src="img/setup.jpg" alt="" onerror="this.remove()">
+        </div>
+      </div><!-- /apply-split -->
+
+      <!-- Écran de confirmation -->
+      <div class="sent" id="apply-sent">
+        <div class="ok"><svg viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg></div>
+        <h3>Candidature bien reçue.</h3>
+        <p>Je lis chaque candidature moi-même. Si ton profil correspond, tu reçois un email sous 48 heures avec un lien pour réserver ton appel de découverte.</p>
+        <p style="font-size:13.5px;color:#6a6864;">Pense à vérifier tes spams — c'est là que finissent la moitié de mes réponses.</p>
+        <div class="next">
+          <a class="btn btn-outline" href="#programme">Revoir le programme</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
 
 <!-- ══════════════ PREUVES ══════════════
      Dépose les images dans img/ (voir img/README.md).
@@ -1283,257 +1561,6 @@ window.__phFallback = function (img, path) {
   </div>
 </section>
 
-<!-- ══════════════ CANDIDATURE ══════════════ -->
-<section class="apply" id="candidature">
-  <div class="wrap">
-    <div class="rv center">
-      <div class="k">Candidature</div>
-      <h2 class="sec">Parle-moi de toi.</h2>
-      <p class="sec-sub">
-        Cinq minutes à remplir, une réponse sous 48 h. Aucun paiement à cette étape —
-        juste un appel si ton profil correspond.
-      </p>
-    </div>
-
-    <div class="apply-card rv">
-      <div class="apply-split" id="apply-split">
-        <div class="apply-left">
-      <form class="frm" id="apply-form" novalidate>
-        <!-- Piège à robots -->
-        <div class="hp" aria-hidden="true">
-          <label for="site-web">Ne pas remplir</label>
-          <input type="text" id="site-web" name="site-web" tabindex="-1" autocomplete="off">
-        </div>
-
-        <div class="steps-head">
-          <div class="steps-bar"><div class="steps-fill" id="steps-fill"></div></div>
-          <div class="steps-meta">
-            <span class="steps-count" id="steps-count">1 / 12</span>
-          </div>
-        </div>
-
-        <div class="step-pane on" data-q="Comment tu t'appelles ?">
-          <div class="q-head"><h3 class="q-title">Comment tu t'appelles ?</h3></div>
-          <div class="fld">
-            <label for="f-prenom">Prénom <span class="req">*</span></label>
-            <input type="text" id="f-prenom" name="prenom" autocomplete="given-name" placeholder="Thomas" required>
-            <span class="err-msg">Indique ton prénom.</span>
-          </div>
-          <div class="fld">
-            <label for="f-nom">Nom</label>
-            <input type="text" id="f-nom" name="nom" autocomplete="family-name" placeholder="Dupont">
-          </div>
-        </div>
-
-        <div class="step-pane">
-          <div class="q-head">
-            <h3 class="q-title">Sur quelle adresse je te réponds ?</h3>
-            <p class="q-hint">C'est là que tu recevras ma réponse sous 48 h. Aucun spam, jamais.</p>
-          </div>
-          <div class="fld full">
-            <label for="f-email">Email <span class="req">*</span></label>
-            <input type="email" id="f-email" name="email" autocomplete="email" placeholder="toi@exemple.com" required>
-            <span class="err-msg">Cet email n'a pas l'air valide.</span>
-          </div>
-        </div>
-
-        <div class="step-pane">
-          <div class="q-head">
-            <h3 class="q-title">Sur quel numéro je peux te joindre ?</h3>
-            <p class="q-hint">Facultatif — mais ça accélère beaucoup la prise de rendez-vous.</p>
-          </div>
-          <div class="fld full">
-            <label for="f-tel">Téléphone / WhatsApp</label>
-            <input type="tel" id="f-tel" name="telephone" autocomplete="tel" placeholder="+33 6 12 34 56 78">
-          </div>
-          <div class="fld full">
-            <label for="f-reseau">Ou ton Instagram, Discord, Telegram</label>
-            <input type="text" id="f-reseau" name="reseau" placeholder="@ton_pseudo">
-          </div>
-        </div>
-
-        <div class="step-pane">
-          <div class="q-head"><h3 class="q-title">Depuis combien de temps tu trades ?</h3></div>
-          <div class="fld full">
-            <label for="f-exp">Ton ancienneté <span class="req">*</span></label>
-            <select id="f-exp" name="experience" required data-auto>
-              <option value="">Choisis…</option>
-              <option>Je n'ai pas encore commencé</option>
-              <option>Moins de 6 mois</option>
-              <option>6 mois à 1 an</option>
-              <option>1 à 3 ans</option>
-              <option>Plus de 3 ans</option>
-            </select>
-            <span class="err-msg">Sélectionne une réponse.</span>
-          </div>
-        </div>
-
-        <div class="step-pane">
-          <div class="q-head"><h3 class="q-title">Qu'est-ce que tu trades ?</h3></div>
-          <div class="fld full">
-            <label for="f-marches">Tes marchés <span class="req">*</span></label>
-            <select id="f-marches" name="marches" required data-auto>
-              <option value="">Choisis…</option>
-              <option>Forex</option>
-              <option>Indices</option>
-              <option>Futures</option>
-              <option>Actions</option>
-              <option>Crypto</option>
-              <option>Un peu de tout</option>
-            </select>
-            <span class="err-msg">Sélectionne une réponse.</span>
-          </div>
-        </div>
-
-        <div class="step-pane">
-          <div class="q-head">
-            <h3 class="q-title">Où en est ton compte aujourd'hui ?</h3>
-            <p class="q-hint">Sois honnête : ça ne disqualifie personne, ça me sert à préparer l'appel.</p>
-          </div>
-          <div class="fld full">
-            <label for="f-capital">Ta situation <span class="req">*</span></label>
-            <select id="f-capital" name="capital" required data-auto>
-              <option value="">Choisis…</option>
-              <option>Compte démo uniquement</option>
-              <option>Compte perso — moins de 1 000 €</option>
-              <option>Compte perso — 1 000 à 10 000 €</option>
-              <option>Compte perso — plus de 10 000 €</option>
-              <option>Challenge prop firm en cours</option>
-              <option>Compte prop firm financé</option>
-            </select>
-            <span class="err-msg">Sélectionne une réponse.</span>
-          </div>
-        </div>
-
-        <div class="step-pane">
-          <div class="q-head">
-            <h3 class="q-title">Combien de temps tu peux y consacrer ?</h3>
-            <p class="q-hint">En dessous de 5 h par semaine, le format ne fonctionne pas — autant le savoir maintenant.</p>
-          </div>
-          <div class="fld full">
-            <label for="f-dispo">Par semaine <span class="req">*</span></label>
-            <select id="f-dispo" name="disponibilite" required data-auto>
-              <option value="">Choisis…</option>
-              <option>Moins de 5 h</option>
-              <option>5 à 10 h</option>
-              <option>10 à 20 h</option>
-              <option>Plus de 20 h</option>
-            </select>
-            <span class="err-msg">Sélectionne une réponse.</span>
-          </div>
-        </div>
-
-        <div class="step-pane">
-          <div class="q-head">
-            <h3 class="q-title">Tu veux en être où dans 6 mois ?</h3>
-            <p class="q-hint">Un objectif précis vaut mieux qu'un grand rêve. Deux lignes suffisent.</p>
-          </div>
-          <div class="fld full">
-            <label for="f-objectif">Ton objectif <span class="req">*</span></label>
-            <textarea id="f-objectif" name="objectif" placeholder="Ex. : valider un challenge FTMO 50k et sortir un premier retrait sans cramer le compte." required></textarea>
-            <span class="err-msg">Décris ton objectif en quelques mots.</span>
-          </div>
-        </div>
-
-        <div class="step-pane">
-          <div class="q-head">
-            <h3 class="q-title">Qu'est-ce qui te bloque le plus ?</h3>
-            <p class="q-hint">C'est la réponse que je lis en premier. Plus tu es franc, plus l'appel sert à quelque chose.</p>
-          </div>
-          <div class="fld full">
-            <label for="f-blocage">Ton blocage <span class="req">*</span></label>
-            <textarea id="f-blocage" name="blocage" placeholder="Discipline, gestion du risque, manque de méthode, gestion des émotions…" required></textarea>
-            <span class="err-msg">Dis-m'en un peu plus.</span>
-          </div>
-        </div>
-
-        <div class="step-pane">
-          <div class="q-head">
-            <h3 class="q-title">Quel format t'intéresse ?</h3>
-            <p class="q-hint">Rien n'est figé — on en reparle pendant l'appel.</p>
-          </div>
-          <div class="fld full">
-            <label for="f-format">Le format visé</label>
-            <select id="f-format" name="format" data-auto>
-              <option value="">Je ne sais pas encore</option>
-              <option>Audit flash</option>
-              <option>Accompagnement 12 semaines</option>
-              <option>Mentorat long terme</option>
-            </select>
-          </div>
-        </div>
-
-        <div class="step-pane">
-          <div class="q-head"><h3 class="q-title">Comment tu m'as connu ?</h3></div>
-          <div class="fld full">
-            <label for="f-source">La provenance</label>
-            <select id="f-source" name="source" data-auto>
-              <option value="">Choisis…</option>
-              <option>Instagram</option>
-              <option>TikTok</option>
-              <option>YouTube</option>
-              <option>Discord / Telegram</option>
-              <option>Bouche à oreille</option>
-              <option>Autre</option>
-            </select>
-          </div>
-        </div>
-
-        <div class="step-pane">
-          <div class="q-head">
-            <h3 class="q-title">Dernière étape.</h3>
-            <p class="q-hint">Relis-toi si tu veux — le bouton Retour te ramène en arrière sans rien perdre.</p>
-          </div>
-          <div class="consent">
-            <input type="checkbox" id="f-consent" name="consent" required>
-            <label for="f-consent">
-              J'accepte que mes réponses soient utilisées pour étudier ma candidature et me recontacter.
-              J'ai compris que le trading comporte un risque de perte en capital et qu'aucun résultat n'est garanti.
-              (<a href="confidentialite.html">politique de confidentialité</a>)
-            </label>
-          </div>
-        </div>
-
-        <div class="frm-alert" id="frm-alert">
-          <span id="frm-alert-txt"></span>
-        </div>
-
-        <div class="frm-actions">
-          <div class="frm-nav">
-            <button class="btn btn-outline" type="button" id="frm-prev" hidden>Retour</button>
-            <button class="btn btn-primary" type="button" id="frm-next">
-              Continuer
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
-            </button>
-            <button class="btn btn-primary" type="submit" id="frm-submit" hidden>
-              <span id="frm-submit-label">Envoyer ma candidature</span>
-              <svg id="frm-submit-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
-            </button>
-          </div>
-          <div class="frm-note">Aucun paiement à cette étape · Réponse sous 48 h · Tes réponses restent confidentielles</div>
-        </div>
-      </form>
-
-        </div><!-- /apply-left -->
-        <div class="apply-right" aria-hidden="true">
-          <img src="img/setup.jpg" alt="" onerror="this.remove()">
-        </div>
-      </div><!-- /apply-split -->
-
-      <!-- Écran de confirmation -->
-      <div class="sent" id="apply-sent">
-        <div class="ok"><svg viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg></div>
-        <h3>Candidature bien reçue.</h3>
-        <p>Je lis chaque candidature moi-même. Si ton profil correspond, tu reçois un email sous 48 heures avec un lien pour réserver ton appel de découverte.</p>
-        <p style="font-size:13.5px;color:#6a6864;">Pense à vérifier tes spams — c'est là que finissent la moitié de mes réponses.</p>
-        <div class="next">
-          <a class="btn btn-outline" href="#programme">Revoir le programme</a>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
 <!-- Agrandissement des preuves au clic -->
 <div class="lb" id="lb" role="dialog" aria-modal="true" aria-label="Image agrandie">
   <button class="lb-close" type="button" aria-label="Fermer"><svg viewBox="0 0 24 24"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg></button>
@@ -1684,6 +1711,11 @@ document.addEventListener('DOMContentLoaded', function () {
       var fld = el.closest('.fld');
       var ok;
       if (el.type === 'checkbox') ok = el.checked;
+      else if (el.type === 'radio') {
+        /* Le `required` ne porte que sur le premier bouton du groupe :
+           on vérifie qu'au moins un de ses frères est coché. */
+        ok = !!form.querySelector('input[name="' + el.name + '"]:checked');
+      }
       else if (el.type === 'email') ok = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(el.value.trim());
       else ok = el.value.trim().length > 0;
 
@@ -1741,13 +1773,15 @@ document.addEventListener('DOMContentLoaded', function () {
   });
   prevBt.addEventListener('click', function () { if (step > 0) goTo(step - 1); });
 
-  /* Choisir dans une liste fait avancer tout seul — un clic au lieu de deux.
-     On laisse un court délai pour que le choix reste visible. */
-  form.querySelectorAll('select[data-auto]').forEach(function (sel) {
-    sel.addEventListener('change', function () {
-      if (!sel.value || step === panes.length - 1) return;
-      if (!panes[step].contains(sel)) return;
-      setTimeout(function () { if (!validate(panes[step])) goTo(step + 1); }, 220);
+  /* Choisir une réponse fait avancer tout seul — un geste au lieu de deux.
+     Court délai pour que la sélection reste visible, et seulement si
+     l'écran ne contient que cette question (sinon on laisse remplir le reste). */
+  form.querySelectorAll('.opts input[type="radio"]').forEach(function (r) {
+    r.addEventListener('change', function () {
+      var pane = panes[step];
+      if (!pane || !pane.contains(r) || step === panes.length - 1) return;
+      if (pane.querySelectorAll('input:not([type=radio]), textarea').length) return;
+      setTimeout(function () { if (!validate(pane)) goTo(step + 1); }, 260);
     });
   });
 
@@ -1772,9 +1806,11 @@ document.addEventListener('DOMContentLoaded', function () {
       email:         v('email'),
       telephone:     v('telephone'),
       reseau:        v('reseau'),
+      age:           v('age'),
       experience:    v('experience'),
       marches:       v('marches'),
       capital:       v('capital'),
+      situation:     v('situation'),
       disponibilite: v('disponibilite'),
       objectif:      v('objectif'),
       blocage:       v('blocage'),
@@ -1787,9 +1823,9 @@ document.addEventListener('DOMContentLoaded', function () {
   function mailtoLink(d) {
     var body =
       'Prénom : ' + d.prenom + '\nNom : ' + d.nom + '\nEmail : ' + d.email +
-      '\nTéléphone : ' + d.telephone + '\nRéseau : ' + d.reseau +
+      '\nTéléphone : ' + d.telephone + '\nRéseau : ' + d.reseau + '\nÂge : ' + d.age +
       '\n\nExpérience : ' + d.experience + '\nMarchés : ' + d.marches +
-      '\nCompte : ' + d.capital + '\nDisponibilité : ' + d.disponibilite +
+      '\nCompte : ' + d.capital + '\nSituation : ' + d.situation + '\nDisponibilité : ' + d.disponibilite +
       '\nFormat visé : ' + d.format + '\nSource : ' + d.source +
       '\n\nObjectif :\n' + d.objectif + '\n\nBlocage :\n' + d.blocage + '\n';
     return 'mailto:' + CONFIG.EMAIL_CONTACT +
