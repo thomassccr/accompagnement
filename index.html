@@ -547,7 +547,15 @@ window.__phFallback = function (img, path) {
   /* On neutralise l'ancien voile radial : le décor passe par .bg */
   body::before { content:none; }
 
-  .bg { position:fixed; inset:0; z-index:0; pointer-events:none; overflow:hidden; }
+  .bg {
+    position:absolute; inset:0; z-index:0; pointer-events:none; overflow:hidden;
+    /* Fondu sur le dernier quart : la transition vers le noir se fait
+       pile au moment où le questionnaire arrive. */
+    -webkit-mask-image:linear-gradient(to bottom, #000 62%, rgba(0,0,0,.55) 84%, transparent 100%);
+            mask-image:linear-gradient(to bottom, #000 62%, rgba(0,0,0,.55) 84%, transparent 100%);
+  }
+  /* Le contenu du hero doit passer devant le décor */
+  .hero > *:not(.bg) { position:relative; z-index:1; }
   /* Grille de fond, atténuée au centre pour laisser respirer le texte */
   .bg-grid {
     position:absolute; inset:-2px;
@@ -690,15 +698,17 @@ window.__phFallback = function (img, path) {
 </head>
 <body>
 
-<!-- Décor : grille, sol en perspective, traînées de lumière. Purement CSS. -->
-<div class="bg" aria-hidden="true">
-  <span class="bg-grid"></span>
-  <span class="bg-floor"></span>
-  <span class="bg-streaks"><i></i><i></i><i></i><i></i></span>
-</div>
-
 <!-- ══════════════ HERO ══════════════ -->
 <header class="hero" id="top">
+
+  <!-- Décor : grille, sol en perspective, traînées de lumière. Purement CSS.
+       Confiné au hero et fondu sur sa dernière portion : dès le questionnaire,
+       le fond est noir et le reste jusqu'en bas de page. -->
+  <div class="bg" aria-hidden="true">
+    <span class="bg-grid"></span>
+    <span class="bg-floor"></span>
+    <span class="bg-streaks"><i></i><i></i><i></i><i></i></span>
+  </div>
 
   <h1 class="fx fx-2">
     À <span class="hl">17 ans</span>, j'ai généré
