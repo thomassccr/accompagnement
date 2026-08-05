@@ -64,7 +64,52 @@ l'ajout d'une ligne, et un service qui met en forme l'email. Compte 10 minutes, 
    - *URL* : colle l'URL copiée à l'étape A2
 3. *Create webhook*
 
-**C. Vérifier**
+**Contenu de l'email (Body type : Raw HTML)**
+
+Le `1.` correspond au numéro du module webhook dans le scénario. Vérifie-le : si ton
+webhook porte un autre numéro, remplace-le partout.
+
+```html
+<div style="font-family:-apple-system,Segoe UI,sans-serif;font-size:15px;color:#222;">
+  <h2 style="margin:0 0 4px;">{{1.record.prenom}} {{1.record.nom}}</h2>
+  <p style="margin:0 0 18px;color:#666;">
+    {{1.record.age}} &middot; {{1.record.situation}}<br>
+    <a href="mailto:{{1.record.email}}">{{1.record.email}}</a><br>
+    {{1.record.telephone}} &nbsp; {{1.record.reseau}}
+  </p>
+
+  <table cellpadding="7" style="border-collapse:collapse;font-size:14px;">
+    <tr><td style="color:#888;">Niveau</td><td><b>{{1.record.experience}}</b></td></tr>
+    <tr><td style="color:#888;">Marchés</td><td>{{1.record.marches}}</td></tr>
+    <tr><td style="color:#888;">Compte</td><td>{{1.record.capital}}</td></tr>
+    <tr><td style="color:#888;">Dispo</td><td>{{1.record.disponibilite}}</td></tr>
+    <tr><td style="color:#888;">Format visé</td><td>{{1.record.format}}</td></tr>
+    <tr><td style="color:#888;">Vient de</td><td>{{1.record.source}}</td></tr>
+  </table>
+
+  <h3 style="margin:22px 0 4px;">Objectif à 6 mois</h3>
+  <p style="margin:0;white-space:pre-wrap;">{{1.record.objectif}}</p>
+
+  <h3 style="margin:22px 0 4px;">Ce qui le bloque</h3>
+  <p style="margin:0;white-space:pre-wrap;">{{1.record.blocage}}</p>
+</div>
+```
+
+Objet suggéré : `Nouvelle candidature — {{1.record.prenom}}`
+
+**C. Faire apprendre la structure à Make**
+
+Make ne connaît les champs qu'après avoir reçu une première fois la donnée. Si le
+panneau de mapping est vide, c'est ça :
+
+1. Dans Make, clique **Run once** — le scénario passe en attente
+2. Dans Supabase → *Table Editor* → `formation_candidatures` → **Insert row**, remplis
+   deux ou trois cases au hasard → *Save*
+3. Make reçoit la ligne et affiche désormais tous les champs sous `record`
+
+Cette astuce évite d'avoir à passer par le site pour tester.
+
+**D. Vérifier
 
 Remplis une fausse candidature sur le site. L'email doit arriver dans la minute. S'il
 n'arrive pas : Supabase → Webhooks → onglet des logs, le code de réponse y est affiché.
