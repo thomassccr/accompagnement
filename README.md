@@ -35,8 +35,42 @@ récupérer tes candidatures depuis un navigateur. Tu les consultes depuis Supab
 Dans `index.html`, bloc `CONFIG` en bas de fichier, remplace `contact@exemple.com` par ton
 adresse email : elle sert de secours si Supabase est injoignable.
 
-Pour être prévenu par email à chaque candidature : Supabase → *Database → Webhooks*, sur
-`INSERT` de la table, vers Zapier, Make ou Resend.
+### Recevoir un email à chaque candidature
+
+Supabase enregistre, mais ne prévient pas. Pour être alerté, on branche un webhook sur
+l'ajout d'une ligne, et un service qui met en forme l'email. Compte 10 minutes, sans code.
+
+**A. Créer le point d'arrivée (make.com, gratuit)**
+
+1. Crée un compte sur [make.com](https://www.make.com) → *Create a new scenario*
+2. Clique le gros `+` → cherche **Webhooks** → choisis **Custom webhook** → *Add* →
+   nomme-le `candidature` → *Save* → **copie l'URL** affichée
+3. Clique le `+` à droite du webhook → cherche **Email** → **Send me an email**
+4. Remplis :
+   - *To* : ton adresse
+   - *Subject* : `Nouvelle candidature`
+   - *Content* : tape ton texte et insère les champs depuis le panneau de droite,
+     ils apparaissent sous `record` (`record.prenom`, `record.email`, `record.objectif`…)
+5. En bas à gauche, bascule l'interrupteur du scénario sur **ON**
+
+**B. Brancher Supabase dessus**
+
+1. Supabase → menu de gauche → **Database** → **Webhooks** → *Enable webhooks* si demandé
+2. *Create a new hook* :
+   - *Name* : `nouvelle_candidature`
+   - *Table* : `formation_candidatures`
+   - *Events* : coche **Insert** uniquement
+   - *Type* : **HTTP Request**, méthode **POST**
+   - *URL* : colle l'URL copiée à l'étape A2
+3. *Create webhook*
+
+**C. Vérifier**
+
+Remplis une fausse candidature sur le site. L'email doit arriver dans la minute. S'il
+n'arrive pas : Supabase → Webhooks → onglet des logs, le code de réponse y est affiché.
+
+Supabase envoie un objet JSON dont les réponses se trouvent dans `record`. Exemple :
+`record.prenom`, `record.age`, `record.experience`, `record.blocage`.
 
 ## 3. Personnaliser le contenu
 
