@@ -1,14 +1,19 @@
-Dépose ici les photos du site. Respecte exactement ces noms de fichiers.
+Photos utilisées par le site. Les noms de fichiers sont référencés dans index.html :
+si tu en renommes un, corrige aussi le `src` correspondant.
 
-Section « Les preuves » :
-- ftmo-challenge.jpg      Certificat Passed FTMO Challenge (26 mai 2026)
-- ftmo-verification.jpg   Certificat Passed Verification (5 juin 2026)
-- ftmo-payout.jpg         Certificat Reward / premier retrait (24 juin 2026)
-- trade-us100.jpg         Capture propre du ticket US100 (le ticket seul)
-- setup.jpg               Photo du poste de trading
+En place :
+- ftmo-challenge.jpg      Certificat Passed FTMO Challenge — 26 mai 2026
+- ftmo-verification.jpg   Certificat Passed Verification — 5 juin 2026
+- ftmo-payout.jpg         Certificat Reward, 126,50 $ — 24 juin 2026
+- historique.jpg          Historique des trades clôturés, +1 004,17 $
+- positions.jpg           Deux positions US100 en cours, +600,93 $ latents
+- setup.jpg               Le poste de trading
 
-Section « Qui t'accompagne » :
+Optionnel, pas encore fourni :
 - coach.jpg               Ton portrait (vertical, ~800x1000 px)
+                          Sans lui, la bio s'affiche en pleine largeur, sans cadre vide.
+                          Pour l'ajouter : dépose le fichier ici, puis remets le bloc
+                          .coach-photo laissé en commentaire dans index.html.
 
-Tant qu'un fichier est absent, la page affiche un cadre « image à ajouter »
-au lieu d'une image cassée : le site reste présentable même incomplet.
+Si un fichier manque, la page affiche un cadre discret « image à ajouter »
+au lieu d'une image cassée.
