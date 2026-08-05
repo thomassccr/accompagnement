@@ -8,18 +8,17 @@
      Tout le texte à personnaliser est signalé par un commentaire  [À REMPLIR]
      Les images attendues vont dans  img/  (voir img/README.md)
      ═══════════════════════════════════════════════════════════════════ -->
-<title>Accompagnement Valmont — Deviens le trader que tu voulais être</title>
+<title>Accompagnement trading individuel — Sur candidature</title>
 <meta name="description" content="Accompagnement individuel en trading : plan sur mesure, suivi hebdomadaire et debrief de tes trades. Places limitées, sur candidature.">
 <meta property="og:type" content="website">
-<meta property="og:title" content="Accompagnement Valmont — Sur candidature">
+<meta property="og:title" content="Accompagnement trading individuel — Sur candidature">
 <meta property="og:description" content="Accompagnement individuel en trading : plan sur mesure, suivi hebdomadaire et debrief de tes trades. Places limitées.">
-<meta property="og:image" content="https://valmontfx.vercel.app/shots/dashboard.png">
+<meta property="og:image" content="img/ftmo-challenge.jpg">
 <meta property="og:url" content="">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Accompagnement Valmont — Sur candidature">
+<meta name="twitter:title" content="Accompagnement trading individuel — Sur candidature">
 <meta name="twitter:description" content="Accompagnement individuel en trading : plan sur mesure, suivi hebdomadaire et debrief de tes trades.">
-<meta name="twitter:image" content="https://valmontfx.vercel.app/shots/dashboard.png">
-<link rel="icon" href="icon-192.png">
+<meta name="twitter:image" content="img/ftmo-challenge.jpg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -423,13 +422,7 @@ window.__phFallback = function (img, path) {
 
   /* ── Formulaire de candidature ── */
   .apply { position:relative; z-index:1; }
-  .apply-card {
-    max-width:760px; margin:44px auto 0;
-    background:linear-gradient(180deg, rgba(255,255,255,0.05), rgba(255,255,255,0.02));
-    border:1px solid rgba(255,255,255,0.1); border-radius:22px; padding:38px 36px;
-    box-shadow:0 34px 100px rgba(0,0,0,.55);
-  }
-  @media (max-width:640px){ .apply-card { padding:26px 20px; border-radius:18px; } }
+  .apply-card { max-width:940px; margin:44px auto 0; }
   .frm { display:grid; grid-template-columns:1fr 1fr; gap:18px; text-align:left; }
   .fld { display:flex; flex-direction:column; gap:7px; }
   .fld.full { grid-column:1 / -1; }
@@ -459,6 +452,47 @@ window.__phFallback = function (img, path) {
   .fld.err .err-msg { display:block; }
   /* Piège à robots : invisible pour les humains */
   .hp { position:absolute; left:-9999px; width:1px; height:1px; opacity:0; }
+  /* ── Panneau de candidature : question à gauche, visuel à droite ── */
+  .apply-split {
+    display:grid; grid-template-columns:1.08fr .92fr; align-items:stretch;
+    border-radius:22px; overflow:hidden; border:1px solid rgba(255,255,255,0.1);
+    background:linear-gradient(180deg, rgba(255,255,255,0.05), rgba(255,255,255,0.02));
+    box-shadow:0 34px 100px rgba(0,0,0,.55);
+  }
+  .apply-left { padding:38px 36px 32px; min-width:0; }
+  .apply-right { position:relative; background:#0b0c0e; min-height:100%; }
+  .apply-right img { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; display:block; }
+  .apply-right::after {
+    content:''; position:absolute; inset:0;
+    background:linear-gradient(90deg, rgba(5,5,5,.85) 0%, rgba(5,5,5,.15) 45%, rgba(5,5,5,0) 100%);
+  }
+  @media (max-width:900px) {
+    .apply-split { grid-template-columns:1fr; }
+    .apply-right { min-height:150px; order:-1; }
+    .apply-right::after { background:linear-gradient(180deg, rgba(5,5,5,0) 30%, rgba(5,5,5,.9) 100%); }
+    .apply-left { padding:26px 20px 24px; }
+  }
+
+  /* Une question par écran : le titre porte la question, le label reste discret */
+  .q-head { grid-column:1 / -1; margin-bottom:6px; }
+  .q-title { font-size:clamp(21px,2.3vw,29px); font-weight:700; color:#fff; letter-spacing:-.02em; line-height:1.2; }
+  .q-hint { font-size:13.5px; line-height:1.6; color:#8a8680; margin-top:10px; }
+
+  /* ── Formulaire en 3 étapes ──
+     Un formulaire de 13 champs d'un bloc fait fuir ; découpé, chaque écran
+     paraît court et l'engagement se construit au fur et à mesure. */
+  .steps-head { grid-column:1 / -1; margin-bottom:4px; }
+  .steps-bar { height:3px; border-radius:2px; background:rgba(255,255,255,.08); overflow:hidden; }
+  .steps-fill { height:100%; width:33.33%; background:#3d8ef0; border-radius:2px; transition:width .45s cubic-bezier(.16,1,.3,1); }
+  .steps-meta { display:flex; align-items:baseline; justify-content:flex-end; margin-top:11px; }
+  .steps-count { font-family:'DM Mono',monospace; font-size:11px; letter-spacing:.14em; color:#6a6864; }
+  .step-pane { display:none; grid-column:1 / -1; }
+  .step-pane.on { display:grid; grid-template-columns:1fr 1fr; gap:18px; animation:fadeUp .35s ease-out both; }
+  @media (max-width:640px){ .step-pane.on { grid-template-columns:1fr; } }
+  .frm-nav { grid-column:1 / -1; display:flex; gap:12px; justify-content:center; flex-wrap:wrap; margin-top:4px; }
+  .frm-nav .btn { min-width:170px; }
+  .frm-nav .btn[hidden] { display:none; }
+
   .consent { display:flex; align-items:flex-start; gap:11px; grid-column:1 / -1; }
   .consent input { width:17px; height:17px; flex-shrink:0; margin-top:2px; accent-color:#3d8ef0; cursor:pointer; }
   .consent label { font-size:12.5px; line-height:1.6; color:#8a8680; cursor:pointer; }
@@ -479,7 +513,12 @@ window.__phFallback = function (img, path) {
   @media (max-width:640px){ .frm { grid-template-columns:1fr; } }
 
   /* État « candidature envoyée » */
-  .sent { display:none; text-align:center; padding:22px 6px 8px; }
+  .sent {
+    display:none; text-align:center; padding:46px 30px 40px;
+    border-radius:22px; border:1px solid rgba(255,255,255,0.1);
+    background:linear-gradient(180deg, rgba(255,255,255,0.05), rgba(255,255,255,0.02));
+    box-shadow:0 34px 100px rgba(0,0,0,.55);
+  }
   .sent.on { display:block; animation:fadeUp .5s ease-out both; }
   .sent .ok {
     width:62px; height:62px; border-radius:50%; margin:0 auto 22px;
@@ -507,9 +546,9 @@ window.__phFallback = function (img, path) {
 
 <!-- ══════════════ NAVIGATION ══════════════ -->
 <nav class="nav" id="nav">
+  <!-- [À REMPLIR] ta marque : ton prénom, ton nom ou le nom que tu donnes à l'offre -->
   <a class="nav-brand" href="#top">
-    <img src="icon-192.png" alt="">
-    <span>VALMONT</span>
+    <span>THOMAS</span>
   </a>
   <div class="nav-links">
     <a href="#preuves">Les preuves</a>
@@ -523,7 +562,6 @@ window.__phFallback = function (img, path) {
 
 <!-- ══════════════ HERO ══════════════ -->
 <header class="hero" id="top">
-  <img class="logo fx fx-1" src="icon-512.png" alt="Valmont">
 
   <div class="fx fx-1">
     <span class="badge">
@@ -731,7 +769,7 @@ window.__phFallback = function (img, path) {
       <div class="pillar">
         <div class="n">PILIER 04</div>
         <h3>La donnée, pas l'impression</h3>
-        <p>Chaque trade journalisé dans Valmont. On regarde tes vraies stats : win rate par setup, par jour, par heure. Les décisions se prennent sur des chiffres.</p>
+        <p>Chaque trade journalisé. On regarde tes vraies stats : win rate par setup, par jour, par heure. Les décisions se prennent sur des chiffres.</p>
       </div>
     </div>
   </div>
@@ -762,7 +800,7 @@ window.__phFallback = function (img, path) {
         <div class="mod-body"><div class="mod-body-in">
           <p>On repart de tes données réelles, pas de ce que tu crois faire. Import de ton historique, lecture de tes stats, identification des trois fuites qui te coûtent le plus.</p>
           <ul>
-            <li>Import de ton historique de trades dans Valmont</li>
+            <li>Import de ton historique de trades dans l'outil de suivi</li>
             <li>Analyse de ton win rate, profit factor et drawdown réels</li>
             <li>Identification de tes trois erreurs les plus coûteuses</li>
             <li>Fixation d'un objectif chiffré à 12 semaines</li>
@@ -818,7 +856,7 @@ window.__phFallback = function (img, path) {
           <ul>
             <li>Routine de préparation avant l'ouverture</li>
             <li>Gestion du trade en cours : ce que tu as le droit de toucher</li>
-            <li>Debrief du soir en 10 minutes, avec le coach IA</li>
+            <li>Debrief du soir en 10 minutes, avec une trame guidée</li>
             <li>Protocole après une grosse perte ou une grosse série</li>
           </ul>
         </div></div>
@@ -886,8 +924,8 @@ window.__phFallback = function (img, path) {
       </div>
       <div class="inc">
         <div class="ic"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 9h6v6H9z"/></svg></div>
-        <h3>Licence Valmont incluse</h3>
-        <p>L'application complète pendant tout l'accompagnement : dashboard, journal, import FTMO et coach IA.</p>
+        <h3>L'outil de suivi inclus</h3>
+        <p>Le tableau de bord et le journal que j'utilise moi-même, offerts pendant toute la durée de l'accompagnement : import FTMO, statistiques, calendrier de P&amp;L.</p>
       </div>
       <div class="inc">
         <div class="ic"><svg viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg></div>
@@ -942,7 +980,7 @@ window.__phFallback = function (img, path) {
         <div class="tl-dot">4</div>
         <div class="tl-txt">
           <h3>On démarre</h3>
-          <p>Accès à Valmont, premier appel planifié, audit de tes données. Ta première semaine commence dans la foulée.</p>
+          <p>Accès à l'outil de suivi, premier appel planifié, audit de tes données. Ta première semaine commence dans la foulée.</p>
         </div>
       </div>
     </div>
@@ -984,7 +1022,7 @@ window.__phFallback = function (img, path) {
           <li><svg viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg>12 appels 1-to-1 de 45 minutes</li>
           <li><svg viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg>Suivi illimité par message en semaine</li>
           <li><svg viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg>Debrief vidéo hebdomadaire de tes trades</li>
-          <li><svg viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg>Licence Valmont incluse</li>
+          <li><svg viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg>Outil de suivi inclus</li>
           <li><svg viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg>Tous les supports et modèles</li>
           <li><svg viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg>Accès au groupe privé à vie</li>
         </ul>
@@ -1073,13 +1111,13 @@ window.__phFallback = function (img, path) {
           premier coup — puis la vérification, puis un premier retrait <b>29 jours après</b>.
         </p>
         <p>
-          C'est de là qu'est né Valmont : l'outil que j'aurais voulu avoir dès le début. J'ouvre
+          C'est de là qu'est né l'outil de suivi que je fais utiliser à mes élèves — celui que j'aurais voulu avoir dès le début. J'ouvre
           aujourd'hui six places, en individuel, pour transmettre exactement ce qui m'a fait
           passer de « je tourne en rond » à un compte financé. Pas de promesse de rendement,
           pas de vente de rêve : un cadre, des données, et quelqu'un qui regarde tes trades
           avec toi jusqu'à ce que ça tienne.
         </p>
-        <div class="coach-sign">— THOMAS · FONDATEUR DE VALMONT</div>
+        <div class="coach-sign">— THOMAS</div>
       </div>
     </div>
   </div>
@@ -1233,8 +1271,8 @@ window.__phFallback = function (img, path) {
         <div class="qa-body"><p>Oui, sur l'accompagnement 12 semaines et le mentorat. Les modalités sont détaillées pendant l'appel, sans frais cachés.</p></div>
       </div>
       <div class="qa">
-        <button class="qa-head" type="button">L'application Valmont est-elle obligatoire ?<svg class="qa-plus" viewBox="0 0 24 24"><path d="M12 5v14"/><path d="M5 12h14"/></svg></button>
-        <div class="qa-body"><p>Oui, c'est le support du suivi : c'est là que je vois tes trades et tes stats entre deux appels. La licence est incluse pendant tout l'accompagnement, tu n'as rien à payer en plus.</p></div>
+        <button class="qa-head" type="button">L'outil de suivi est-il obligatoire ?<svg class="qa-plus" viewBox="0 0 24 24"><path d="M12 5v14"/><path d="M5 12h14"/></svg></button>
+        <div class="qa-body"><p>Oui, c'est le support du suivi : c'est là que je vois tes trades et tes stats entre deux appels. Il est inclus pendant tout l'accompagnement, tu n'as rien à payer en plus.</p></div>
       </div>
     </div>
   </div>
@@ -1253,6 +1291,8 @@ window.__phFallback = function (img, path) {
     </div>
 
     <div class="apply-card rv">
+      <div class="apply-split" id="apply-split">
+        <div class="apply-left">
       <form class="frm" id="apply-form" novalidate>
         <!-- Piège à robots -->
         <div class="hp" aria-hidden="true">
@@ -1260,130 +1300,193 @@ window.__phFallback = function (img, path) {
           <input type="text" id="site-web" name="site-web" tabindex="-1" autocomplete="off">
         </div>
 
-        <div class="fld">
-          <label for="f-prenom">Prénom <span class="req">*</span></label>
-          <input type="text" id="f-prenom" name="prenom" autocomplete="given-name" placeholder="Thomas" required>
-          <span class="err-msg">Indique ton prénom.</span>
+        <div class="steps-head">
+          <div class="steps-bar"><div class="steps-fill" id="steps-fill"></div></div>
+          <div class="steps-meta">
+            <span class="steps-count" id="steps-count">1 / 12</span>
+          </div>
         </div>
 
-        <div class="fld">
-          <label for="f-nom">Nom</label>
-          <input type="text" id="f-nom" name="nom" autocomplete="family-name" placeholder="Dupont">
+        <div class="step-pane on" data-q="Comment tu t'appelles ?">
+          <div class="q-head"><h3 class="q-title">Comment tu t'appelles ?</h3></div>
+          <div class="fld">
+            <label for="f-prenom">Prénom <span class="req">*</span></label>
+            <input type="text" id="f-prenom" name="prenom" autocomplete="given-name" placeholder="Thomas" required>
+            <span class="err-msg">Indique ton prénom.</span>
+          </div>
+          <div class="fld">
+            <label for="f-nom">Nom</label>
+            <input type="text" id="f-nom" name="nom" autocomplete="family-name" placeholder="Dupont">
+          </div>
         </div>
 
-        <div class="fld">
-          <label for="f-email">Email <span class="req">*</span></label>
-          <input type="email" id="f-email" name="email" autocomplete="email" placeholder="toi@exemple.com" required>
-          <span class="err-msg">Cet email n'a pas l'air valide.</span>
+        <div class="step-pane">
+          <div class="q-head">
+            <h3 class="q-title">Sur quelle adresse je te réponds ?</h3>
+            <p class="q-hint">C'est là que tu recevras ma réponse sous 48 h. Aucun spam, jamais.</p>
+          </div>
+          <div class="fld full">
+            <label for="f-email">Email <span class="req">*</span></label>
+            <input type="email" id="f-email" name="email" autocomplete="email" placeholder="toi@exemple.com" required>
+            <span class="err-msg">Cet email n'a pas l'air valide.</span>
+          </div>
         </div>
 
-        <div class="fld">
-          <label for="f-tel">Téléphone / WhatsApp</label>
-          <input type="tel" id="f-tel" name="telephone" autocomplete="tel" placeholder="+33 6 12 34 56 78">
+        <div class="step-pane">
+          <div class="q-head">
+            <h3 class="q-title">Sur quel numéro je peux te joindre ?</h3>
+            <p class="q-hint">Facultatif — mais ça accélère beaucoup la prise de rendez-vous.</p>
+          </div>
+          <div class="fld full">
+            <label for="f-tel">Téléphone / WhatsApp</label>
+            <input type="tel" id="f-tel" name="telephone" autocomplete="tel" placeholder="+33 6 12 34 56 78">
+          </div>
+          <div class="fld full">
+            <label for="f-reseau">Ou ton Instagram, Discord, Telegram</label>
+            <input type="text" id="f-reseau" name="reseau" placeholder="@ton_pseudo">
+          </div>
         </div>
 
-        <div class="fld full">
-          <label for="f-reseau">Instagram, Discord ou Telegram</label>
-          <input type="text" id="f-reseau" name="reseau" placeholder="@ton_pseudo">
-          <span class="hint">Facultatif — mais ça accélère la prise de contact.</span>
+        <div class="step-pane">
+          <div class="q-head"><h3 class="q-title">Depuis combien de temps tu trades ?</h3></div>
+          <div class="fld full">
+            <label for="f-exp">Ton ancienneté <span class="req">*</span></label>
+            <select id="f-exp" name="experience" required data-auto>
+              <option value="">Choisis…</option>
+              <option>Je n'ai pas encore commencé</option>
+              <option>Moins de 6 mois</option>
+              <option>6 mois à 1 an</option>
+              <option>1 à 3 ans</option>
+              <option>Plus de 3 ans</option>
+            </select>
+            <span class="err-msg">Sélectionne une réponse.</span>
+          </div>
         </div>
 
-        <div class="fld">
-          <label for="f-exp">Depuis combien de temps tu trades ? <span class="req">*</span></label>
-          <select id="f-exp" name="experience" required>
-            <option value="">Choisis…</option>
-            <option>Je n'ai pas encore commencé</option>
-            <option>Moins de 6 mois</option>
-            <option>6 mois à 1 an</option>
-            <option>1 à 3 ans</option>
-            <option>Plus de 3 ans</option>
-          </select>
-          <span class="err-msg">Sélectionne une réponse.</span>
+        <div class="step-pane">
+          <div class="q-head"><h3 class="q-title">Qu'est-ce que tu trades ?</h3></div>
+          <div class="fld full">
+            <label for="f-marches">Tes marchés <span class="req">*</span></label>
+            <select id="f-marches" name="marches" required data-auto>
+              <option value="">Choisis…</option>
+              <option>Forex</option>
+              <option>Indices</option>
+              <option>Futures</option>
+              <option>Actions</option>
+              <option>Crypto</option>
+              <option>Un peu de tout</option>
+            </select>
+            <span class="err-msg">Sélectionne une réponse.</span>
+          </div>
         </div>
 
-        <div class="fld">
-          <label for="f-marches">Ce que tu trades <span class="req">*</span></label>
-          <select id="f-marches" name="marches" required>
-            <option value="">Choisis…</option>
-            <option>Forex</option>
-            <option>Indices</option>
-            <option>Futures</option>
-            <option>Actions</option>
-            <option>Crypto</option>
-            <option>Un peu de tout</option>
-          </select>
-          <span class="err-msg">Sélectionne une réponse.</span>
+        <div class="step-pane">
+          <div class="q-head">
+            <h3 class="q-title">Où en est ton compte aujourd'hui ?</h3>
+            <p class="q-hint">Sois honnête : ça ne disqualifie personne, ça me sert à préparer l'appel.</p>
+          </div>
+          <div class="fld full">
+            <label for="f-capital">Ta situation <span class="req">*</span></label>
+            <select id="f-capital" name="capital" required data-auto>
+              <option value="">Choisis…</option>
+              <option>Compte démo uniquement</option>
+              <option>Compte perso — moins de 1 000 €</option>
+              <option>Compte perso — 1 000 à 10 000 €</option>
+              <option>Compte perso — plus de 10 000 €</option>
+              <option>Challenge prop firm en cours</option>
+              <option>Compte prop firm financé</option>
+            </select>
+            <span class="err-msg">Sélectionne une réponse.</span>
+          </div>
         </div>
 
-        <div class="fld">
-          <label for="f-capital">Ta situation de compte <span class="req">*</span></label>
-          <select id="f-capital" name="capital" required>
-            <option value="">Choisis…</option>
-            <option>Compte démo uniquement</option>
-            <option>Compte perso — moins de 1 000 €</option>
-            <option>Compte perso — 1 000 à 10 000 €</option>
-            <option>Compte perso — plus de 10 000 €</option>
-            <option>Challenge prop firm en cours</option>
-            <option>Compte prop firm financé</option>
-          </select>
-          <span class="err-msg">Sélectionne une réponse.</span>
+        <div class="step-pane">
+          <div class="q-head">
+            <h3 class="q-title">Combien de temps tu peux y consacrer ?</h3>
+            <p class="q-hint">En dessous de 5 h par semaine, le format ne fonctionne pas — autant le savoir maintenant.</p>
+          </div>
+          <div class="fld full">
+            <label for="f-dispo">Par semaine <span class="req">*</span></label>
+            <select id="f-dispo" name="disponibilite" required data-auto>
+              <option value="">Choisis…</option>
+              <option>Moins de 5 h</option>
+              <option>5 à 10 h</option>
+              <option>10 à 20 h</option>
+              <option>Plus de 20 h</option>
+            </select>
+            <span class="err-msg">Sélectionne une réponse.</span>
+          </div>
         </div>
 
-        <div class="fld">
-          <label for="f-dispo">Temps disponible par semaine <span class="req">*</span></label>
-          <select id="f-dispo" name="disponibilite" required>
-            <option value="">Choisis…</option>
-            <option>Moins de 5 h</option>
-            <option>5 à 10 h</option>
-            <option>10 à 20 h</option>
-            <option>Plus de 20 h</option>
-          </select>
-          <span class="err-msg">Sélectionne une réponse.</span>
+        <div class="step-pane">
+          <div class="q-head">
+            <h3 class="q-title">Tu veux en être où dans 6 mois ?</h3>
+            <p class="q-hint">Un objectif précis vaut mieux qu'un grand rêve. Deux lignes suffisent.</p>
+          </div>
+          <div class="fld full">
+            <label for="f-objectif">Ton objectif <span class="req">*</span></label>
+            <textarea id="f-objectif" name="objectif" placeholder="Ex. : valider un challenge FTMO 50k et sortir un premier retrait sans cramer le compte." required></textarea>
+            <span class="err-msg">Décris ton objectif en quelques mots.</span>
+          </div>
         </div>
 
-        <div class="fld full">
-          <label for="f-objectif">Ton objectif sur les 6 prochains mois <span class="req">*</span></label>
-          <textarea id="f-objectif" name="objectif" placeholder="Ex. : valider un challenge FTMO 50k et sortir un premier retrait sans cramer le compte." required></textarea>
-          <span class="err-msg">Décris ton objectif en quelques mots.</span>
+        <div class="step-pane">
+          <div class="q-head">
+            <h3 class="q-title">Qu'est-ce qui te bloque le plus ?</h3>
+            <p class="q-hint">C'est la réponse que je lis en premier. Plus tu es franc, plus l'appel sert à quelque chose.</p>
+          </div>
+          <div class="fld full">
+            <label for="f-blocage">Ton blocage <span class="req">*</span></label>
+            <textarea id="f-blocage" name="blocage" placeholder="Discipline, gestion du risque, manque de méthode, gestion des émotions…" required></textarea>
+            <span class="err-msg">Dis-m'en un peu plus.</span>
+          </div>
         </div>
 
-        <div class="fld full">
-          <label for="f-blocage">Aujourd'hui, qu'est-ce qui te bloque le plus ? <span class="req">*</span></label>
-          <textarea id="f-blocage" name="blocage" placeholder="Sois honnête : discipline, gestion du risque, manque de méthode, gestion des émotions…" required></textarea>
-          <span class="err-msg">Dis-m'en un peu plus.</span>
+        <div class="step-pane">
+          <div class="q-head">
+            <h3 class="q-title">Quel format t'intéresse ?</h3>
+            <p class="q-hint">Rien n'est figé — on en reparle pendant l'appel.</p>
+          </div>
+          <div class="fld full">
+            <label for="f-format">Le format visé</label>
+            <select id="f-format" name="format" data-auto>
+              <option value="">Je ne sais pas encore</option>
+              <option>Audit flash</option>
+              <option>Accompagnement 12 semaines</option>
+              <option>Mentorat long terme</option>
+            </select>
+          </div>
         </div>
 
-        <div class="fld">
-          <label for="f-format">Le format qui t'intéresse</label>
-          <select id="f-format" name="format">
-            <option value="">Je ne sais pas encore</option>
-            <option>Audit flash</option>
-            <option>Accompagnement 12 semaines</option>
-            <option>Mentorat long terme</option>
-          </select>
+        <div class="step-pane">
+          <div class="q-head"><h3 class="q-title">Comment tu m'as connu ?</h3></div>
+          <div class="fld full">
+            <label for="f-source">La provenance</label>
+            <select id="f-source" name="source" data-auto>
+              <option value="">Choisis…</option>
+              <option>Instagram</option>
+              <option>TikTok</option>
+              <option>YouTube</option>
+              <option>Discord / Telegram</option>
+              <option>Bouche à oreille</option>
+              <option>Autre</option>
+            </select>
+          </div>
         </div>
 
-        <div class="fld">
-          <label for="f-source">Comment tu m'as connu ?</label>
-          <select id="f-source" name="source">
-            <option value="">Choisis…</option>
-            <option>Instagram</option>
-            <option>TikTok</option>
-            <option>YouTube</option>
-            <option>Discord / Telegram</option>
-            <option>L'application Valmont</option>
-            <option>Bouche à oreille</option>
-            <option>Autre</option>
-          </select>
-        </div>
-
-        <div class="consent">
-          <input type="checkbox" id="f-consent" name="consent" required>
-          <label for="f-consent">
-            J'accepte que mes réponses soient utilisées pour étudier ma candidature et me recontacter.
-            J'ai compris que le trading comporte un risque de perte en capital et qu'aucun résultat n'est garanti.
-            (<a href="confidentialite.html">politique de confidentialité</a>)
-          </label>
+        <div class="step-pane">
+          <div class="q-head">
+            <h3 class="q-title">Dernière étape.</h3>
+            <p class="q-hint">Relis-toi si tu veux — le bouton Retour te ramène en arrière sans rien perdre.</p>
+          </div>
+          <div class="consent">
+            <input type="checkbox" id="f-consent" name="consent" required>
+            <label for="f-consent">
+              J'accepte que mes réponses soient utilisées pour étudier ma candidature et me recontacter.
+              J'ai compris que le trading comporte un risque de perte en capital et qu'aucun résultat n'est garanti.
+              (<a href="confidentialite.html">politique de confidentialité</a>)
+            </label>
+          </div>
         </div>
 
         <div class="frm-alert" id="frm-alert">
@@ -1391,13 +1494,26 @@ window.__phFallback = function (img, path) {
         </div>
 
         <div class="frm-actions">
-          <button class="btn btn-primary" type="submit" id="frm-submit">
-            <span id="frm-submit-label">Envoyer ma candidature</span>
-            <svg id="frm-submit-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
-          </button>
+          <div class="frm-nav">
+            <button class="btn btn-outline" type="button" id="frm-prev" hidden>Retour</button>
+            <button class="btn btn-primary" type="button" id="frm-next">
+              Continuer
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+            </button>
+            <button class="btn btn-primary" type="submit" id="frm-submit" hidden>
+              <span id="frm-submit-label">Envoyer ma candidature</span>
+              <svg id="frm-submit-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+            </button>
+          </div>
           <div class="frm-note">Aucun paiement à cette étape · Réponse sous 48 h · Tes réponses restent confidentielles</div>
         </div>
       </form>
+
+        </div><!-- /apply-left -->
+        <div class="apply-right" aria-hidden="true">
+          <img src="img/setup.jpg" alt="" onerror="this.remove()">
+        </div>
+      </div><!-- /apply-split -->
 
       <!-- Écran de confirmation -->
       <div class="sent" id="apply-sent">
@@ -1406,7 +1522,7 @@ window.__phFallback = function (img, path) {
         <p>Je lis chaque candidature moi-même. Si ton profil correspond, tu reçois un email sous 48 heures avec un lien pour réserver ton appel de découverte.</p>
         <p style="font-size:13.5px;color:#6a6864;">Pense à vérifier tes spams — c'est là que finissent la moitié de mes réponses.</p>
         <div class="next">
-          <a class="btn btn-outline" href="https://valmontfx.vercel.app" target="_blank" rel="noopener">Découvrir l'app Valmont</a>
+          <a class="btn btn-outline" href="#programme">Revoir le programme</a>
         </div>
       </div>
     </div>
@@ -1422,13 +1538,12 @@ window.__phFallback = function (img, path) {
 <!-- ══════════════ PIED DE PAGE ══════════════ -->
 <footer>
   <div class="foot-links">
-    <a href="https://valmontfx.vercel.app" target="_blank" rel="noopener">L'application Valmont</a>
     <a href="#programme">Programme</a>
     <a href="#candidature">Postuler</a>
     <a href="cgv.html">CGV de l'accompagnement</a>
     <a href="confidentialite.html">Politique de confidentialité</a>
   </div>
-  <div class="foot-copy">© 2026 VALMONT — TOUS DROITS RÉSERVÉS</div>
+  <div class="foot-copy">© 2026 — TOUS DROITS RÉSERVÉS</div>
   <p class="foot-legal">
     Le trading comporte un risque de perte en capital pouvant aller jusqu'à la totalité des sommes investies.
     Les performances passées ne préjugent pas des performances futures. Cet accompagnement est une prestation
@@ -1441,7 +1556,7 @@ window.__phFallback = function (img, path) {
 /* ═══════════════════════════════════════════════════════════════
    RÉCEPTION DES CANDIDATURES
    Les candidatures sont enregistrées dans la table `formation_candidatures`
-   de ton projet Supabase (le même que l'app). Exécute une fois le fichier
+   de ton projet Supabase. Exécute une fois le fichier
    supabase-formation-schema.sql dans le SQL Editor de Supabase.
 
    EMAIL_CONTACT sert de solution de secours : si Supabase est injoignable,
@@ -1451,7 +1566,7 @@ var CONFIG = {
   SUPABASE_URL:  'https://hlczyaluhqrbrybaofjd.supabase.co',
   SUPABASE_KEY:  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImhsY3p5YWx1aHFyYnJ5YmFvZmpkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODM3NjM2MzIsImV4cCI6MjA5OTMzOTYzMn0.LAq3IgCOCJFsMQXxxHp8tmXa_amFMzZvgcSXAhz9-bY',
   TABLE:         'formation_candidatures',
-  EMAIL_CONTACT: 'contact@valmontfx.com'   /* [À REMPLIR] ton adresse email */
+  EMAIL_CONTACT: 'contact@exemple.com'   /* [À REMPLIR] ton adresse email */
 };
 
 document.addEventListener('DOMContentLoaded', function () {
@@ -1558,9 +1673,9 @@ document.addEventListener('DOMContentLoaded', function () {
     alrt.classList.add('on');
   }
 
-  function validate() {
+  function validate(scope) {
     var firstBad = null;
-    form.querySelectorAll('[required]').forEach(function (el) {
+    (scope || form).querySelectorAll('[required]').forEach(function (el) {
       var fld = el.closest('.fld');
       var ok;
       if (el.type === 'checkbox') ok = el.checked;
@@ -1572,12 +1687,74 @@ document.addEventListener('DOMContentLoaded', function () {
     });
     /* La case de consentement n'est pas dans un .fld : on la signale à part */
     var consent = document.getElementById('f-consent');
-    if (!consent.checked) {
+    if ((scope || form).contains(consent) && !consent.checked) {
       showAlert('Merci de cocher la case de consentement pour envoyer ta candidature.');
       if (!firstBad) firstBad = consent;
     }
     return firstBad;
   }
+
+  /* ── Navigation entre les étapes ── */
+  var panes  = [].slice.call(form.querySelectorAll('.step-pane'));
+  var prevBt = document.getElementById('frm-prev');
+  var nextBt = document.getElementById('frm-next');
+  var fill   = document.getElementById('steps-fill');
+  var sCount = document.getElementById('steps-count');
+  var split  = document.getElementById('apply-split');
+  var step = 0;
+
+  function render() {
+    panes.forEach(function (p, i) { p.classList.toggle('on', i === step); });
+    var last = step === panes.length - 1;
+    prevBt.hidden = step === 0;
+    nextBt.hidden = last;
+    btn.hidden    = !last;
+    fill.style.width = ((step + 1) / panes.length * 100) + '%';
+    sCount.textContent = (step + 1) + ' / ' + panes.length;
+  }
+
+  function goTo(i) {
+    step = i;
+    render();
+    alrt.classList.remove('on');
+    /* On recadre sur le haut du formulaire, pas sur le champ : moins brutal */
+    var card = split || form;
+    var y = card.getBoundingClientRect().top + window.scrollY - 90;
+    window.scrollTo({ top: y, behavior: 'smooth' });
+    var f = panes[step].querySelector('input, select, textarea');
+    if (f) setTimeout(function () { f.focus({ preventScroll: true }); }, 380);
+  }
+
+  nextBt.addEventListener('click', function () {
+    var bad = validate(panes[step]);
+    if (bad) {
+      bad.focus({ preventScroll: true });
+      bad.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      return;
+    }
+    if (step < panes.length - 1) goTo(step + 1);
+  });
+  prevBt.addEventListener('click', function () { if (step > 0) goTo(step - 1); });
+
+  /* Choisir dans une liste fait avancer tout seul — un clic au lieu de deux.
+     On laisse un court délai pour que le choix reste visible. */
+  form.querySelectorAll('select[data-auto]').forEach(function (sel) {
+    sel.addEventListener('change', function () {
+      if (!sel.value || step === panes.length - 1) return;
+      if (!panes[step].contains(sel)) return;
+      setTimeout(function () { if (!validate(panes[step])) goTo(step + 1); }, 220);
+    });
+  });
+
+  /* Entrée passe à l'étape suivante au lieu de soumettre prématurément */
+  form.addEventListener('keydown', function (e) {
+    if (e.key === 'Enter' && e.target.tagName !== 'TEXTAREA' && !nextBt.hidden) {
+      e.preventDefault();
+      nextBt.click();
+    }
+  });
+
+  render();
 
   function collect() {
     var v = function (name) {
@@ -1633,14 +1810,20 @@ document.addEventListener('DOMContentLoaded', function () {
 
     /* Robot : le champ piège est rempli → on fait semblant d'accepter */
     if (form.elements['site-web'] && form.elements['site-web'].value) {
-      form.style.display = 'none'; sent.classList.add('on');
+      split.style.display = 'none'; sent.classList.add('on');
       return;
     }
 
-    var bad = validate();
+    var bad = validate(form);
     if (bad) {
-      bad.focus({ preventScroll: true });
-      bad.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      /* Le champ fautif peut être sur une étape déjà passée : on y retourne */
+      var pane = bad.closest('.step-pane');
+      var idx = panes.indexOf(pane);
+      if (idx > -1 && idx !== step) { goTo(idx); }
+      setTimeout(function () {
+        bad.focus({ preventScroll: true });
+        bad.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }, idx > -1 && idx !== step ? 420 : 0);
       return;
     }
 
@@ -1659,7 +1842,7 @@ document.addEventListener('DOMContentLoaded', function () {
     })
     .then(function (res) {
       if (!res.ok) return res.text().then(function (t) { throw new Error(t || res.status); });
-      form.style.display = 'none';
+      split.style.display = 'none';
       sent.classList.add('on');
       sent.scrollIntoView({ behavior: 'smooth', block: 'center' });
     })

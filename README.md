@@ -32,7 +32,7 @@ Le site sort sur `https://<utilisateur>.github.io/accompagnement/`.
 Sécurité : le site ne peut qu'**ajouter** une candidature, jamais en lire. Personne ne peut
 récupérer tes candidatures depuis un navigateur. Tu les consultes depuis Supabase.
 
-Dans `index.html`, bloc `CONFIG` en bas de fichier, remplace `contact@valmontfx.com` par ton
+Dans `index.html`, bloc `CONFIG` en bas de fichier, remplace `contact@exemple.com` par ton
 adresse email : elle sert de secours si Supabase est injoignable.
 
 Pour être prévenu par email à chaque candidature : Supabase → *Database → Webhooks*, sur
