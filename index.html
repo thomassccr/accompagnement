@@ -812,6 +812,30 @@ window.__phFallback = function (img, path) {
     max-width:660px; margin:0 auto 14px;
   }
 
+  /* ── Bandeau de résultats en défilement continu ──
+     Volontairement sans pause au survol : le mouvement ne s'interrompt jamais. */
+  .mq { position:relative; overflow:hidden; margin-top:44px; }
+  .mq-track {
+    display:flex; gap:20px; width:max-content;
+    animation:mqScroll 58s linear infinite;
+    will-change:transform;
+  }
+  .mq:hover .mq-track,
+  .mq-track:hover { animation-play-state:running !important; }
+  @keyframes mqScroll { to { transform:translateX(calc(-50% - 10px)); } }
+  .mq-fade { position:absolute; top:0; bottom:0; width:140px; z-index:2; pointer-events:none; }
+  .mq-fade.l { left:0;  background:linear-gradient(90deg,#000 0%, rgba(0,0,0,0) 100%); }
+  .mq-fade.r { right:0; background:linear-gradient(270deg,#000 0%, rgba(0,0,0,0) 100%); }
+  .rcard {
+    width:420px; flex-shrink:0; border-radius:20px; overflow:hidden;
+    background:#0b0c0e; border:1px solid rgba(255,255,255,.1);
+    box-shadow:0 24px 60px rgba(0,0,0,.55);
+  }
+  .rcard img { width:100%; aspect-ratio:4 / 3; object-fit:cover; display:block; }
+  .rcard .ph { aspect-ratio:4 / 3; }
+  @media (max-width:640px){ .rcard { width:300px; } .mq-fade { width:70px; } }
+  @media (prefers-reduced-motion:reduce){ .mq-track { animation:none; } }
+
   .hero-media.vbox { aspect-ratio:16 / 10; border-radius:20px; margin-top:52px; }
   @media (max-width:700px){ .hero-media.vbox { aspect-ratio:4 / 3; margin-top:34px; } }
   @media (max-width:880px){
@@ -1388,6 +1412,40 @@ window.__phFallback = function (img, path) {
 </div>
 
 
+<!-- ══════════════ 8. RÉSULTATS RÉCENTS ══════════════
+     Bandeau défilant en continu. Le défilement ne s'arrête pas au survol.
+     Images attendues : img/resultat-1.jpg … resultat-8.jpg -->
+<section id="resultats">
+  <div class="wrap">
+    <div class="rv center">
+      <h2 class="sec">Résultats <span class="hl">récents</span></h2>
+      <p class="sec-sub">Ce que partagent les traders que j'accompagne, au fil des semaines.</p>
+    </div>
+  </div>
+
+  <div class="mq rv">
+    <div class="mq-fade l"></div>
+    <div class="mq-fade r"></div>
+    <div class="mq-track" id="mq-track">
+      <figure class="rcard"><img src="img/resultat-1.jpg" alt="" loading="lazy" onerror="window.__phFallback&&window.__phFallback(this,'img/resultat-1.jpg')"></figure>
+      <figure class="rcard"><img src="img/resultat-2.jpg" alt="" loading="lazy" onerror="window.__phFallback&&window.__phFallback(this,'img/resultat-2.jpg')"></figure>
+      <figure class="rcard"><img src="img/resultat-3.jpg" alt="" loading="lazy" onerror="window.__phFallback&&window.__phFallback(this,'img/resultat-3.jpg')"></figure>
+      <figure class="rcard"><img src="img/resultat-4.jpg" alt="" loading="lazy" onerror="window.__phFallback&&window.__phFallback(this,'img/resultat-4.jpg')"></figure>
+      <figure class="rcard"><img src="img/resultat-5.jpg" alt="" loading="lazy" onerror="window.__phFallback&&window.__phFallback(this,'img/resultat-5.jpg')"></figure>
+      <figure class="rcard"><img src="img/resultat-6.jpg" alt="" loading="lazy" onerror="window.__phFallback&&window.__phFallback(this,'img/resultat-6.jpg')"></figure>
+      <figure class="rcard"><img src="img/resultat-7.jpg" alt="" loading="lazy" onerror="window.__phFallback&&window.__phFallback(this,'img/resultat-7.jpg')"></figure>
+      <figure class="rcard"><img src="img/resultat-8.jpg" alt="" loading="lazy" onerror="window.__phFallback&&window.__phFallback(this,'img/resultat-8.jpg')"></figure>
+    </div>
+  </div>
+
+  <div class="wrap">
+    <p class="proof-note">
+      Captures partagées par des personnes accompagnées. Ces résultats leur sont propres et
+      ne préjugent en rien des tiens : le trading comporte un risque de perte en capital.
+    </p>
+  </div>
+</section>
+
 <div class="cta-band rv">
   <a class="btn btn-primary" href="#candidature">Postule maintenant</a>
 </div>
@@ -1479,6 +1537,15 @@ document.addEventListener('DOMContentLoaded', function () {
       b.style.maxHeight = b.scrollHeight + 'px';
     });
   });
+
+  /* ── Bandeau de résultats : on duplique les cartes une fois pour que
+     la boucle se referme sans saut visible à -50 %. ── */
+  var mq = document.getElementById('mq-track');
+  if (mq) {
+    var copie = mq.cloneNode(true);
+    copie.querySelectorAll('.rcard').forEach(function (c) { c.setAttribute('aria-hidden', 'true'); });
+    while (copie.firstChild) mq.appendChild(copie.firstChild);
+  }
 
   /* ── Témoignages vidéo : lecture au clic, cadre d'attente si le fichier manque ── */
   document.querySelectorAll('.vbox').forEach(function (box) {

@@ -19,5 +19,13 @@ En place — ailleurs :
                           Format vertical, elles s'affichent légèrement inclinées.
 - coach.jpg               Ton portrait (optionnel, bloc actuellement retiré)
 
+Section 8 — bandeau « Résultats récents », défilement continu :
+- resultat-1.jpg … resultat-8.jpg
+                          Captures partagées par tes élèves : messages, tickets,
+                          historiques. Format paysage, elles sont recadrées en 4/3.
+                          Pense à masquer les noms et identifiants qui ne doivent
+                          pas être publics, et à demander leur accord avant de
+                          publier une capture qui vient d'eux.
+
 Si un fichier manque, la page affiche un cadre « image à ajouter »
 au lieu d'une image cassée.
