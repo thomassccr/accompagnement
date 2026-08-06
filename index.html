@@ -812,21 +812,25 @@ window.__phFallback = function (img, path) {
     max-width:660px; margin:0 auto 14px;
   }
 
-  /* ── Avertissement en pied de page ── */
-  .foot-warn {
-    max-width:760px; margin:6px auto 22px; padding:22px 24px;
-    border:1px solid rgba(224,85,95,.22); border-radius:16px;
-    background:rgba(224,85,95,.05); text-align:left;
-  }
+  /* ── Avertissement en pied de page : texte centré, sans cadre ── */
+  .foot-warn { max-width:900px; margin:34px auto 26px; text-align:center; }
   .foot-warn-t {
-    font-family:'Inter',sans-serif; font-weight:700; font-size:13px; color:#d5a5a8;
-    letter-spacing:.02em; margin-bottom:12px;
+    font-family:'Inter',sans-serif; font-weight:600; font-size:15px;
+    color:#c8c4be; letter-spacing:-.01em; margin-bottom:4px;
   }
-  .foot-warn p { font-size:12px; line-height:1.75; color:#8f8783; margin-bottom:10px; }
-  .foot-warn p:last-child { margin-bottom:0; }
-  .foot-warn b { color:#c8b0ae; font-weight:600; }
-  .foot-warn a { color:#d5a5a8; }
-  @media (max-width:640px){ .foot-warn { padding:18px 16px; } }
+  .foot-warn-st {
+    font-family:'Inter',sans-serif; font-weight:600; font-size:14px;
+    color:#a8a49e; margin:22px 0 10px;
+  }
+  .foot-warn-t + .foot-warn-st { margin-top:0; }
+  .foot-warn p { font-size:13.5px; line-height:1.75; color:#8a8680; margin:0 auto 16px; max-width:820px; }
+  .foot-warn b { color:#c8c4be; font-weight:600; }
+  .foot-warn ul { list-style:none; margin:0 auto 18px; padding:0; }
+  .foot-warn li { font-size:13.5px; line-height:1.85; color:#8a8680; }
+  .foot-warn li::before { content:'· '; color:#5a5854; }
+  .foot-warn-maj { font-size:12.5px !important; color:#6a6864 !important; margin-top:22px !important; }
+  .foot-warn a { color:#8a8680; }
+  .foot-warn a:hover { color:#c8c4be; }
 
   /* ── Bandeau de résultats en défilement continu ──
      Volontairement sans pause au survol : le mouvement ne s'interrompt jamais. */
@@ -1477,25 +1481,49 @@ window.__phFallback = function (img, path) {
   </div>
   <div class="foot-warn">
     <div class="foot-warn-t">Avertissement sur les risques et les résultats</div>
+    <div class="foot-warn-st">Aucune garantie de résultat ni de revenu</div>
     <p>
-      <b>Le trading comporte un risque élevé de perte en capital</b>, pouvant aller jusqu'à la
-      totalité des sommes engagées. Une majorité de particuliers qui tradent des produits à effet
-      de levier perdent de l'argent.
+      Le trading comporte un risque élevé de perte en capital, pouvant aller jusqu'à la totalité
+      des sommes engagées. Une majorité de particuliers qui tradent des produits à effet de levier
+      perdent de l'argent. Les chiffres, captures et témoignages présentés sur ce site décrivent
+      des parcours individuels obtenus dans des conditions qui leur sont propres. Ils sont
+      sélectionnés, ne sont pas représentatifs, et ne constituent aucune promesse de gain.
     </p>
+
+    <div class="foot-warn-st">Ce dont dépendent réellement tes résultats</div>
+    <ul>
+      <li>Ton niveau de départ, ton expérience et ta compréhension des marchés</li>
+      <li>Le capital que tu engages et la manière dont tu le gères</li>
+      <li>Le temps que tu consacres réellement, chaque semaine</li>
+      <li>Ta discipline quand il devient inconfortable de suivre ton plan</li>
+      <li>Les conditions de marché, sur lesquelles personne n'a de prise</li>
+      <li>Les règles de ton courtier ou de ta société de financement de traders</li>
+    </ul>
+
     <p>
-      Les chiffres, captures et témoignages présentés sur ce site décrivent des parcours
-      individuels obtenus dans des conditions qui leur sont propres. Ils sont sélectionnés,
-      <b>ne sont pas représentatifs</b> et ne constituent aucune promesse de gain. Certaines
-      personnes accompagnées ne gagneront rien, d'autres perdront de l'argent. Ce que tu obtiens
-      dépend de ton travail, de ta discipline, du capital engagé et des conditions de marché.
+      Je ne promets aucun résultat ni revenu. Certaines personnes accompagnées ne gagneront rien,
+      et certaines perdront de l'argent. D'autres progresseront. Un accompagnement transmet une
+      méthode et un cadre : il n'exécute pas tes trades à ta place et ne compense ni le manque de
+      travail, ni le manque de discipline.
     </p>
+
     <p>
-      Cet accompagnement est une prestation pédagogique : il ne constitue ni un conseil en
-      investissement, ni une gestion de portefeuille, ni une recommandation personnalisée d'achat
-      ou de vente. Chaque décision reste la tienne, sous ta seule responsabilité. Si perdre les
-      sommes engagées aurait des conséquences sérieuses sur ton quotidien, ne postule pas.
+      <b>À retenir :</b> les témoignages publiés décrivent des expériences personnelles, pas une
+      norme. Ne les considère jamais comme le résultat que tu peux attendre par défaut. Les
+      performances passées, les miennes comme celles d'un tiers, ne préjugent en rien des futures.
     </p>
-    <p><a href="avertissement.html">Lire l'avertissement complet</a></p>
+
+    <p>
+      <b>Ta responsabilité :</b> en consultant ce site et en participant à cet accompagnement, tu
+      reconnais assumer l'entière responsabilité de tes décisions et de leurs conséquences
+      financières. Cette prestation est pédagogique et ne constitue ni un conseil en investissement,
+      ni une gestion de portefeuille, ni une recommandation personnalisée d'achat ou de vente. Si
+      perdre les sommes engagées aurait des conséquences sérieuses sur ton quotidien, ne postule pas.
+    </p>
+
+    <p class="foot-warn-maj">
+      Dernière mise à jour : [DATE] · <a href="avertissement.html">Lire l'avertissement complet</a>
+    </p>
   </div>
   <div class="foot-copy">© 2026 — TOUS DROITS RÉSERVÉS</div>
 </footer>
