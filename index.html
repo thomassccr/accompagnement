@@ -812,6 +812,22 @@ window.__phFallback = function (img, path) {
     max-width:660px; margin:0 auto 14px;
   }
 
+  /* ── Avertissement en pied de page ── */
+  .foot-warn {
+    max-width:760px; margin:6px auto 22px; padding:22px 24px;
+    border:1px solid rgba(224,85,95,.22); border-radius:16px;
+    background:rgba(224,85,95,.05); text-align:left;
+  }
+  .foot-warn-t {
+    font-family:'Inter',sans-serif; font-weight:700; font-size:13px; color:#d5a5a8;
+    letter-spacing:.02em; margin-bottom:12px;
+  }
+  .foot-warn p { font-size:12px; line-height:1.75; color:#8f8783; margin-bottom:10px; }
+  .foot-warn p:last-child { margin-bottom:0; }
+  .foot-warn b { color:#c8b0ae; font-weight:600; }
+  .foot-warn a { color:#d5a5a8; }
+  @media (max-width:640px){ .foot-warn { padding:18px 16px; } }
+
   /* ── Bandeau de résultats en défilement continu ──
      Volontairement sans pause au survol : le mouvement ne s'interrompt jamais. */
   .mq { position:relative; overflow:hidden; margin-top:44px; }
@@ -1455,16 +1471,33 @@ window.__phFallback = function (img, path) {
   <div class="foot-links">
     <a href="#temoignages">Témoignages</a>
     <a href="#candidature">Postuler</a>
+    <a href="avertissement.html">Avertissement sur les risques</a>
     <a href="cgv.html">CGV de l'accompagnement</a>
     <a href="confidentialite.html">Politique de confidentialité</a>
   </div>
+  <div class="foot-warn">
+    <div class="foot-warn-t">Avertissement sur les risques et les résultats</div>
+    <p>
+      <b>Le trading comporte un risque élevé de perte en capital</b>, pouvant aller jusqu'à la
+      totalité des sommes engagées. Une majorité de particuliers qui tradent des produits à effet
+      de levier perdent de l'argent.
+    </p>
+    <p>
+      Les chiffres, captures et témoignages présentés sur ce site décrivent des parcours
+      individuels obtenus dans des conditions qui leur sont propres. Ils sont sélectionnés,
+      <b>ne sont pas représentatifs</b> et ne constituent aucune promesse de gain. Certaines
+      personnes accompagnées ne gagneront rien, d'autres perdront de l'argent. Ce que tu obtiens
+      dépend de ton travail, de ta discipline, du capital engagé et des conditions de marché.
+    </p>
+    <p>
+      Cet accompagnement est une prestation pédagogique : il ne constitue ni un conseil en
+      investissement, ni une gestion de portefeuille, ni une recommandation personnalisée d'achat
+      ou de vente. Chaque décision reste la tienne, sous ta seule responsabilité. Si perdre les
+      sommes engagées aurait des conséquences sérieuses sur ton quotidien, ne postule pas.
+    </p>
+    <p><a href="avertissement.html">Lire l'avertissement complet</a></p>
+  </div>
   <div class="foot-copy">© 2026 — TOUS DROITS RÉSERVÉS</div>
-  <p class="foot-legal">
-    Le trading comporte un risque de perte en capital pouvant aller jusqu'à la totalité des sommes investies.
-    Les performances passées ne préjugent pas des performances futures. Cet accompagnement est une prestation
-    pédagogique et ne constitue ni un conseil en investissement, ni une gestion de portefeuille, ni une
-    recommandation personnalisée d'achat ou de vente.
-  </p>
 </footer>
 
 <script>

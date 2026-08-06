@@ -7,6 +7,7 @@ Site statique : aucun serveur à gérer, aucune dépendance à installer.
 index.html            la page principale
 cgv.html              conditions générales de vente
 confidentialite.html  politique de confidentialité
+avertissement.html    avertissement sur les risques et les résultats
 img/                  les photos (voir img/README.md)
 supabase-schema.sql   à exécuter une fois pour recevoir les candidatures
 ```
