@@ -802,6 +802,11 @@ window.__phFallback = function (img, path) {
   .sp img { width:100%; height:100%; object-fit:cover; display:block; }
   .sp:first-child { transform:rotate(-3deg); }
   .sp:last-child  { transform:rotate(3deg); }
+
+  /* Le média du hero est une vidéo : format large, et davantage
+     d'espace entre la pastille du titre et le cadre. */
+  .hero-media.vbox { aspect-ratio:16 / 10; border-radius:20px; margin-top:52px; }
+  @media (max-width:700px){ .hero-media.vbox { aspect-ratio:4 / 3; margin-top:34px; } }
   @media (max-width:880px){
     .story { grid-template-columns:1fr; gap:34px; }
     .story-txt { text-align:center; }
@@ -832,11 +837,13 @@ window.__phFallback = function (img, path) {
     <span class="pill">Regarde comment, puis postule pour que je t'accompagne</span>
   </div>
 
-  <!-- Pour mettre une vidéo de présentation à la place de la photo :
-       dépose media/presentation.mp4 et remplace le <img> par
-       <video src="media/presentation.mp4" poster="img/setup.jpg" controls playsinline></video> -->
-  <div class="hero-media fx fx-3">
-    <img src="img/setup.jpg" alt="Poste de trading" onerror="this.closest('.hero-media').remove()">
+  <!-- Vidéo de présentation. Dépose media/presentation.mp4 pour l'activer :
+       tant que le fichier n'est pas là, un cadre d'attente s'affiche. -->
+  <div class="hero-media vbox fx fx-3">
+    <video preload="metadata" playsinline><source src="media/presentation.mp4" type="video/mp4"></video>
+    <button class="vplay" type="button" aria-label="Lire la vidéo de présentation">
+      <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+    </button>
   </div>
 
   <div class="ctas fx fx-4">
