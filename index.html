@@ -805,6 +805,13 @@ window.__phFallback = function (img, path) {
 
   /* Le média du hero est une vidéo : format large, et davantage
      d'espace entre la pastille du titre et le cadre. */
+  /* Chiffre de marché mis en avant sous un titre de section */
+  .stat-line {
+    font-family:'Inter',sans-serif; font-weight:600; font-size:clamp(15px,1.6vw,18.5px);
+    line-height:1.6; color:#e8e4de; letter-spacing:-.01em;
+    max-width:660px; margin:0 auto 14px;
+  }
+
   .hero-media.vbox { aspect-ratio:16 / 10; border-radius:20px; margin-top:52px; }
   @media (max-width:700px){ .hero-media.vbox { aspect-ratio:4 / 3; margin-top:34px; } }
   @media (max-width:880px){
@@ -868,14 +875,6 @@ window.__phFallback = function (img, path) {
 <!-- ══════════════ CANDIDATURE ══════════════ -->
 <section class="apply" id="candidature">
   <div class="wrap">
-    <div class="rv center">
-      <div class="k">Candidature</div>
-      <p class="sec-sub">
-        Cinq minutes à remplir, une réponse sous 48 h. Aucun paiement à cette étape —
-        juste un appel si ton profil correspond.
-      </p>
-    </div>
-
     <div class="apply-card rv">
       <div class="apply-split" id="apply-split">
         <div class="apply-left">
@@ -1202,6 +1201,12 @@ window.__phFallback = function (img, path) {
   <div class="wrap">
     <div class="rv center">
       <h2 class="sec">Le trading ne récompense pas <span class="hl">la chance.</span><br>Il récompense la méthode.</h2>
+      <!-- [SOURCE À CITER] chiffre de marché : indique d'où il vient, un chiffre
+           sans source se retourne contre toi si quelqu'un le vérifie. -->
+      <p class="stat-line">
+        10,8 milliards de dollars de profits cumulés réalisés par les traders
+        particuliers sur le Nasdaq en 2025.
+      </p>
       <p class="sec-sub">
         La plupart perdent parce qu'ils improvisent, pas parce qu'ils manquent de talent.
         Ce qui sépare les deux, c'est un cadre écrit et tenu.
