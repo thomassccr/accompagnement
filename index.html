@@ -30,7 +30,7 @@ window.__phFallback = function (img, path) {
   var box = img.parentNode;
   if (!box) return;
   img.remove();
-  var fig = box.closest && box.closest('.proof');
+  var fig = box.closest && box.closest('.proof, .pcard');
   if (fig) fig.classList.remove('zoomable');   /* rien à agrandir tant que l'image manque */
   var ph = document.createElement('div');
   ph.className = 'ph';
@@ -447,6 +447,12 @@ window.__phFallback = function (img, path) {
   .opt input:focus-visible + span { box-shadow:0 0 0 3px rgba(61,142,240,.28); }
   .opt:active span { transform:scale(.995); }
   .fld.err .opts .opt span { border-color:rgba(239,107,107,.42); }
+  .vbox .ph { position:absolute; inset:0; }
+
+  /* Le plan tient sur quatre colonnes, puis se replie proprement */
+  .incl.four { grid-template-columns:repeat(4,1fr); }
+  @media (max-width:1040px){ .incl.four { grid-template-columns:repeat(2,1fr); } }
+  @media (max-width:600px){  .incl.four { grid-template-columns:1fr; } }
 
   /* ── Panneau de candidature : question à gauche, visuel à droite ── */
   .apply-split {
@@ -694,6 +700,113 @@ window.__phFallback = function (img, path) {
   /* ── Preuves : coins plus doux, cohérents avec le reste ── */
   .proof { border-radius:20px; }
   .proof-cap .t { font-family:'Inter',sans-serif; font-weight:700; letter-spacing:-.02em; }
+
+  /* ═══════════ Blocs de la nouvelle structure ═══════════ */
+
+  /* ── Grille de témoignages vidéo, format vertical ── */
+  .vgrid { display:grid; grid-template-columns:repeat(4,1fr); gap:18px; margin-top:44px; }
+  .vbox {
+    position:relative; aspect-ratio:9 / 16; border-radius:18px; overflow:hidden;
+    background:#0b0c0e; border:1px solid rgba(255,255,255,.1);
+    box-shadow:0 24px 60px rgba(0,0,0,.6);
+  }
+  .vbox video, .vbox img { width:100%; height:100%; object-fit:cover; display:block; }
+  .vplay {
+    position:absolute; left:50%; top:50%; transform:translate(-50%,-50%);
+    width:60px; height:60px; border-radius:50%; cursor:pointer; padding:0;
+    border:1px solid rgba(255,255,255,.28);
+    background:linear-gradient(180deg,#6fabff 0%,#3182ea 100%);
+    box-shadow:inset 0 1px 0 rgba(255,255,255,.5), 0 10px 30px rgba(49,130,234,.45);
+    display:flex; align-items:center; justify-content:center;
+    transition:transform .18s cubic-bezier(.3,1.4,.5,1);
+  }
+  .vplay svg { width:24px; height:24px; fill:#fff; margin-left:3px; }
+  .vplay:hover { transform:translate(-50%,-50%) scale(1.07); }
+  .vbox.playing .vplay { display:none; }
+  .vcap { text-align:center; margin-top:15px; font-family:'Inter',sans-serif; font-weight:700; font-size:14.5px; color:#e8e4de; letter-spacing:-.015em; }
+  .vcap span { display:block; margin-top:5px; font-weight:400; font-size:12.5px; color:#8a8680; letter-spacing:0; }
+  @media (max-width:1000px){ .vgrid { grid-template-columns:repeat(2,1fr); } }
+  @media (max-width:520px){ .vgrid { grid-template-columns:1fr; } }
+
+  /* ── Rangée de photos sous les vidéos ── */
+  .pgrid { display:grid; grid-template-columns:repeat(4,1fr); gap:16px; margin-top:34px; align-items:start; }
+  .pcard {
+    border-radius:18px; overflow:hidden; background:#0b0c0e;
+    border:1px solid rgba(255,255,255,.1); transition:border-color .25s, transform .25s;
+  }
+  .pcard.zoomable { cursor:zoom-in; }
+  .pcard:hover { border-color:rgba(49,130,234,.35); transform:translateY(-3px); }
+  .pcard img { width:100%; aspect-ratio:1 / 1.414; object-fit:cover; object-position:top center; display:block; }
+  .pcard figcaption {
+    padding:13px 15px 15px; border-top:1px solid rgba(255,255,255,.06);
+    font-family:'DM Mono',monospace; font-size:10.5px; letter-spacing:.08em;
+    text-transform:uppercase; color:#7a7873; text-align:center;
+  }
+  @media (max-width:1000px){ .pgrid { grid-template-columns:repeat(2,1fr); } }
+  @media (max-width:520px){ .pgrid { grid-template-columns:1fr; } }
+
+  /* ── Bloc d'explication : liste cochée à gauche, visuel à droite ── */
+  .explain { display:grid; grid-template-columns:1fr 1fr; gap:24px; margin-top:46px; align-items:stretch; }
+  .checks {
+    background:
+      radial-gradient(120% 90% at 0% 0%, rgba(124,77,219,.26) 0%, transparent 58%),
+      linear-gradient(180deg, rgba(255,255,255,.055), rgba(255,255,255,.015));
+    border:1px solid rgba(255,255,255,.1); border-radius:22px; padding:34px 32px; text-align:left;
+  }
+  .checks h3 { font-family:'Inter',sans-serif; font-weight:800; font-size:22px; letter-spacing:-.025em; color:#fff; margin-bottom:22px; }
+  .checks ul { list-style:none; display:flex; flex-direction:column; gap:15px; }
+  .checks li { display:flex; align-items:flex-start; gap:13px; font-size:15px; line-height:1.5; color:#c8c4be; }
+  .checks li svg {
+    width:22px; height:22px; flex-shrink:0; margin-top:1px; padding:4px; border-radius:50%;
+    stroke:#fff; fill:none; stroke-width:3; stroke-linecap:round; stroke-linejoin:round;
+    background:rgba(255,255,255,.1); border:1px solid rgba(255,255,255,.16);
+  }
+  .explain-visual {
+    border-radius:22px; overflow:hidden; background:#0b0c0e;
+    border:1px solid rgba(255,255,255,.1); min-height:280px;
+    display:flex; align-items:center; justify-content:center;
+  }
+  .explain-visual img { width:100%; height:100%; object-fit:cover; display:block; }
+  @media (max-width:880px){ .explain { grid-template-columns:1fr; } }
+
+  /* ── Grande carte de la communauté ── */
+  .bigcard {
+    max-width:900px; margin:0 auto; text-align:center; border-radius:26px; padding:52px 44px 46px;
+    background:
+      radial-gradient(110% 80% at 50% -10%, rgba(124,77,219,.28) 0%, transparent 62%),
+      linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,.012));
+    border:1px solid rgba(255,255,255,.11);
+    box-shadow:0 40px 110px rgba(0,0,0,.6);
+  }
+  .bigcard h2.sec { margin-bottom:26px; }
+  .bigcard p { font-size:16px; line-height:1.75; color:#a8a49e; max-width:620px; margin:0 auto 18px; }
+  .bigcard p b { color:#e8e4de; font-weight:600; }
+  .bigcard-punch {
+    font-family:'Inter',sans-serif; font-weight:800; font-size:20px; line-height:1.7;
+    color:#fff !important; letter-spacing:-.02em; margin:28px auto !important;
+  }
+  @media (max-width:640px){ .bigcard { padding:36px 22px 32px; border-radius:20px; } }
+
+  /* ── Parcours : texte à gauche, deux photos inclinées à droite ── */
+  .story { display:grid; grid-template-columns:1fr 1fr; gap:48px; align-items:center; }
+  .story-txt { text-align:left; }
+  .story-txt h2.sec { margin-bottom:22px; }
+  .story-txt p { font-size:15.5px; line-height:1.75; color:#8a8680; margin-bottom:15px; }
+  .story-txt p b { color:#c8c4be; font-weight:600; }
+  .story-photos { display:flex; gap:16px; justify-content:center; }
+  .sp {
+    flex:1; min-width:0; border-radius:20px; overflow:hidden; background:#0b0c0e;
+    border:1px solid rgba(255,255,255,.1); aspect-ratio:3 / 4;
+    box-shadow:0 30px 80px rgba(0,0,0,.65);
+  }
+  .sp img { width:100%; height:100%; object-fit:cover; display:block; }
+  .sp:first-child { transform:rotate(-3deg); }
+  .sp:last-child  { transform:rotate(3deg); }
+  @media (max-width:880px){
+    .story { grid-template-columns:1fr; gap:34px; }
+    .story-txt { text-align:center; }
+    .story-txt .btn { margin-inline:auto; }
+  }
 </style>
 </head>
 <body>
@@ -1012,675 +1125,255 @@ window.__phFallback = function (img, path) {
   </div>
 </section>
 
-<!-- ══════════════ PREUVES ══════════════
-     Dépose les images dans img/ (voir img/README.md).
-     Tant qu'un fichier manque, un cadre « image à ajouter » s'affiche à sa place. -->
-<section id="preuves">
-  <div class="wrap">
-    <div class="rv">
-      <div class="k">Les preuves</div>
-      <h2 class="sec">Challenge validé à 17 ans.<br>Premier retrait en moins d'un mois.</h2>
-      <p class="sec-sub">
-        Challenge et vérification passés du premier coup, puis un premier retrait encaissé
-        dans la foulée. Les certificats sont vérifiables par le QR code.
-      </p>
-    </div>
-
-    <div class="proofs rv">
-      <figure class="proof zoomable">
-        <div class="proof-img a4">
-          <img src="img/ftmo-challenge.jpg" alt="Certificat FTMO Challenge validé" loading="lazy"
-               onerror="window.__phFallback&&window.__phFallback(this,'img/ftmo-challenge.jpg')">
-        </div>
-        <figcaption class="proof-cap">
-          <div class="t">FTMO Challenge — validé</div>
-          <div class="d">26 MAI 2026 · 1<sup>ER</sup> ESSAI</div>
-        </figcaption>
-      </figure>
-
-      <figure class="proof zoomable">
-        <div class="proof-img a4">
-          <img src="img/ftmo-verification.jpg" alt="Certificat FTMO Verification validée" loading="lazy"
-               onerror="window.__phFallback&&window.__phFallback(this,'img/ftmo-verification.jpg')">
-        </div>
-        <figcaption class="proof-cap">
-          <div class="t">Vérification — validée</div>
-          <div class="d">5 JUIN 2026 · 10 JOURS PLUS TARD</div>
-        </figcaption>
-      </figure>
-
-      <figure class="proof zoomable">
-        <div class="proof-img a4">
-          <img src="img/ftmo-payout.jpg" alt="Certificat de retrait FTMO" loading="lazy"
-               onerror="window.__phFallback&&window.__phFallback(this,'img/ftmo-payout.jpg')">
-        </div>
-        <figcaption class="proof-cap">
-          <div class="t">Premier retrait encaissé</div>
-          <div class="d">24 JUIN 2026 · +29 JOURS</div>
-        </figcaption>
-      </figure>
-
-      <figure class="proof zoomable">
-        <div class="proof-img tall shot">
-          <img src="img/historique.jpg" alt="Historique des trades clôturés" loading="lazy"
-               onerror="window.__phFallback&&window.__phFallback(this,'img/historique.jpg')">
-        </div>
-        <figcaption class="proof-cap">
-          <div class="t">Cinq trades clôturés, +1 004,17 $</div>
-          <div class="d">MAI 2026 · SOLDE PORTÉ DE 10 000 À 11 004,17 $</div>
-        </figcaption>
-      </figure>
-
-      <figure class="proof zoomable">
-        <div class="proof-img tall shot">
-          <img src="img/positions.jpg" alt="Positions US100 en cours" loading="lazy"
-               onerror="window.__phFallback&&window.__phFallback(this,'img/positions.jpg')">
-        </div>
-        <figcaption class="proof-cap">
-          <div class="t">Deux positions US100 en cours</div>
-          <div class="d">+600,93 $ LATENTS — GAIN NON ENCORE RÉALISÉ</div>
-        </figcaption>
-      </figure>
-
-      <figure class="proof zoomable">
-        <div class="proof-img tall">
-          <img src="img/setup.jpg" alt="Poste de trading" loading="lazy"
-               onerror="window.__phFallback&&window.__phFallback(this,'img/setup.jpg')">
-        </div>
-        <figcaption class="proof-cap">
-          <div class="t">Le poste, tous les matins</div>
-          <div class="d">RIEN D'EXTRAORDINAIRE — DE LA RÉGULARITÉ</div>
-        </figcaption>
-      </figure>
-    </div>
-
-    <p class="proof-note">
-      Ces résultats sont les miens et ne préjugent en rien des tiens. Le trading comporte
-      un risque de perte en capital, et aucun accompagnement ne peut garantir un résultat.
-    </p>
-  </div>
-</section>
-
-
-<div class="cta-band rv">
-  <a class="btn btn-primary" href="#candidature">Postule maintenant</a>
-</div>
-
-<!-- ══════════════ LE CONSTAT ══════════════ -->
-<section id="constat">
-  <div class="wrap">
-    <div class="rv">
-      <div class="k">Le constat</div>
-      <h2 class="sec">Ce n'est pas la stratégie<br>qui te bloque.</h2>
-      <p class="sec-sub">
-        La plupart des traders qui me contactent connaissent déjà la théorie.
-        Ce qui manque, c'est un cadre, un regard extérieur et quelqu'un qui regarde
-        vraiment ce qu'ils font — trade après trade.
-      </p>
-    </div>
-
-    <div class="pains rv">
-      <!-- [À REMPLIR] les 3 douleurs de tes élèves -->
-      <div class="pain">
-        <div class="ic"><svg viewBox="0 0 24 24"><path d="M3 3v18h18"/><path d="m19 9-5 5-4-4-3 3"/></svg></div>
-        <h3>Tu répètes les mêmes erreurs</h3>
-        <p>Revenge trading, taille de position doublée, sortie trop tôt. Tu le sais, tu le refais quand même — parce que personne ne te le renvoie en face.</p>
-      </div>
-      <div class="pain">
-        <div class="ic"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 8v4l3 2"/></svg></div>
-        <h3>Tu perds des mois à zigzaguer</h3>
-        <p>Une nouvelle stratégie tous les quinze jours, dix comptes cramés, zéro donnée exploitable. Un an de trading, mais aucune progression mesurable.</p>
-      </div>
-      <div class="pain">
-        <div class="ic"><svg viewBox="0 0 24 24"><path d="M18 21a6 6 0 0 0-12 0"/><circle cx="12" cy="8" r="4"/></svg></div>
-        <h3>Tu es seul face à l'écran</h3>
-        <p>Personne à qui montrer ton journal, personne pour te dire « celui-là, tu ne devais pas le prendre ». Le trading isolé plafonne toujours.</p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ══════════════ LA MÉTHODE ══════════════ -->
-<section id="methode">
-  <div class="wrap">
-    <div class="rv">
-      <div class="k">La méthode</div>
-      <h2 class="sec">Quatre piliers, dans cet ordre.</h2>
-      <p class="sec-sub">
-        On ne saute aucune étape. Chaque pilier est validé avant de passer au suivant —
-        c'est ce qui fait la différence entre savoir et exécuter.
-      </p>
-    </div>
-
-    <div class="pillars rv">
-      <!-- [À REMPLIR] tes 4 piliers -->
-      <div class="pillar">
-        <div class="n">PILIER 01</div>
-        <h3>Un plan écrit, à toi</h3>
-        <p>On définit ta session, tes paires, ton setup, tes règles d'entrée et de sortie. Noir sur blanc. Si ce n'est pas écrit, ça n'existe pas — et ça ne se mesure pas.</p>
-      </div>
-      <div class="pillar">
-        <div class="n">PILIER 02</div>
-        <h3>La gestion du risque avant tout</h3>
-        <p>Taille de position, risque par trade, drawdown maximum, règles de coupure. Le but n'est pas de gagner vite : c'est de ne jamais sortir du jeu.</p>
-      </div>
-      <div class="pillar">
-        <div class="n">PILIER 03</div>
-        <h3>L'exécution sous contrôle</h3>
-        <p>Routine avant / pendant / après séance. On travaille sur ce qui se passe dans ta tête au moment d'appuyer — c'est là que 90 % du résultat se joue.</p>
-      </div>
-      <div class="pillar">
-        <div class="n">PILIER 04</div>
-        <h3>La donnée, pas l'impression</h3>
-        <p>Chaque trade journalisé. On regarde tes vraies stats : win rate par setup, par jour, par heure. Les décisions se prennent sur des chiffres.</p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ══════════════ PROGRAMME ══════════════ -->
-<section id="programme">
-  <div class="wrap">
-    <div class="rv">
-      <div class="k">Le programme</div>
-      <h2 class="sec">12 semaines, module par module.</h2>
-      <p class="sec-sub">
-        Le contenu est adapté à ton niveau lors de l'appel de découverte — mais la colonne
-        vertébrale reste la même pour tout le monde.
-      </p>
-    </div>
-
-    <div class="modules rv">
-      <!-- [À REMPLIR] tes modules — duplique un bloc .mod pour en ajouter un -->
-
-      <div class="mod">
-        <button class="mod-head" type="button">
-          <span class="mod-num">01</span>
-          <span class="mod-title">Audit complet : où tu en es vraiment</span>
-          <span class="mod-meta">Semaine 1</span>
-          <svg class="mod-chev" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></svg>
-        </button>
-        <div class="mod-body"><div class="mod-body-in">
-          <p>On repart de tes données réelles, pas de ce que tu crois faire. Import de ton historique, lecture de tes stats, identification des trois fuites qui te coûtent le plus.</p>
-          <ul>
-            <li>Import de ton historique de trades dans l'outil de suivi</li>
-            <li>Analyse de ton win rate, profit factor et drawdown réels</li>
-            <li>Identification de tes trois erreurs les plus coûteuses</li>
-            <li>Fixation d'un objectif chiffré à 12 semaines</li>
-          </ul>
-        </div></div>
-      </div>
-
-      <div class="mod">
-        <button class="mod-head" type="button">
-          <span class="mod-num">02</span>
-          <span class="mod-title">Construction de ton plan de trading</span>
-          <span class="mod-meta">Semaines 2–3</span>
-          <svg class="mod-chev" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></svg>
-        </button>
-        <div class="mod-body"><div class="mod-body-in">
-          <p>Un seul setup, maîtrisé à fond, plutôt que cinq approximatifs. On écrit ton plan ensemble, jusqu'à ce qu'il tienne sur une page.</p>
-          <ul>
-            <li>Choix de ta session et de tes instruments</li>
-            <li>Définition du setup : contexte, déclencheur, invalidation</li>
-            <li>Règles d'entrée, de stop et de prise de bénéfices</li>
-            <li>Ta checklist pré-trade en 5 points</li>
-          </ul>
-        </div></div>
-      </div>
-
-      <div class="mod">
-        <button class="mod-head" type="button">
-          <span class="mod-num">03</span>
-          <span class="mod-title">Risk management &amp; survie du compte</span>
-          <span class="mod-meta">Semaine 4</span>
-          <svg class="mod-chev" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></svg>
-        </button>
-        <div class="mod-body"><div class="mod-body-in">
-          <p>La partie que tout le monde survole et qui décide de tout. On calibre ton risque pour que dix pertes d'affilée restent une journée normale.</p>
-          <ul>
-            <li>Calcul de ta taille de position, trade par trade</li>
-            <li>Risque quotidien, hebdomadaire et drawdown maximum</li>
-            <li>Règles de coupure : quand tu fermes la plateforme</li>
-            <li>Spécificités des règles prop firm (FTMO &amp; assimilés)</li>
-          </ul>
-        </div></div>
-      </div>
-
-      <div class="mod">
-        <button class="mod-head" type="button">
-          <span class="mod-num">04</span>
-          <span class="mod-title">Psychologie et routine d'exécution</span>
-          <span class="mod-meta">Semaines 5–7</span>
-          <svg class="mod-chev" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></svg>
-        </button>
-        <div class="mod-body"><div class="mod-body-in">
-          <p>Ton plan ne vaut rien si tu ne l'exécutes pas. On installe une routine et on traite les schémas qui te font dévier.</p>
-          <ul>
-            <li>Routine de préparation avant l'ouverture</li>
-            <li>Gestion du trade en cours : ce que tu as le droit de toucher</li>
-            <li>Debrief du soir en 10 minutes, avec une trame guidée</li>
-            <li>Protocole après une grosse perte ou une grosse série</li>
-          </ul>
-        </div></div>
-      </div>
-
-      <div class="mod">
-        <button class="mod-head" type="button">
-          <span class="mod-num">05</span>
-          <span class="mod-title">Backtest, forward test et statistiques</span>
-          <span class="mod-meta">Semaines 8–9</span>
-          <svg class="mod-chev" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></svg>
-        </button>
-        <div class="mod-body"><div class="mod-body-in">
-          <p>On valide ton edge sur des données, puis en temps réel sur petit compte. À partir d'ici, tu ne décides plus à l'instinct.</p>
-          <ul>
-            <li>Protocole de backtest sur 100 trades minimum</li>
-            <li>Lecture des stats par setup, par jour et par session</li>
-            <li>Forward test encadré, sans pression de résultat</li>
-            <li>Ajustements chiffrés du plan</li>
-          </ul>
-        </div></div>
-      </div>
-
-      <div class="mod">
-        <button class="mod-head" type="button">
-          <span class="mod-num">06</span>
-          <span class="mod-title">Passage du challenge et gestion du compte financé</span>
-          <span class="mod-meta">Semaines 10–12</span>
-          <svg class="mod-chev" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></svg>
-        </button>
-        <div class="mod-body"><div class="mod-body-in">
-          <p>La stratégie de passage, puis le vrai sujet : garder le compte une fois obtenu, et sortir des retraits réguliers.</p>
-          <ul>
-            <li>Choix de la prop firm et de la taille de compte</li>
-            <li>Plan de passage phase 1 et phase 2, sans forcing</li>
-            <li>Gestion d'un compte financé : rythme et retraits</li>
-            <li>Scaling : quand augmenter, quand ne surtout pas</li>
-          </ul>
-        </div></div>
-      </div>
-
-    </div>
-  </div>
-</section>
-
-<!-- ══════════════ CE QUI EST INCLUS ══════════════ -->
-<section id="inclus">
-  <div class="wrap">
-    <div class="rv center">
-      <div class="k">Ce qui est inclus</div>
-      <h2 class="sec">Tout ce dont tu as besoin,<br>rien de superflu.</h2>
-    </div>
-
-    <div class="incl rv">
-      <!-- [À REMPLIR] ce que tu livres réellement -->
-      <div class="inc">
-        <div class="ic"><svg viewBox="0 0 24 24"><path d="M15 10l4.55-2.27A1 1 0 0 1 21 8.6v6.8a1 1 0 0 1-1.45.87L15 14"/><rect x="3" y="6" width="12" height="12" rx="2"/></svg></div>
-        <h3>Appels 1-to-1 hebdomadaires</h3>
-        <p>Une visio de 45 minutes chaque semaine, rien que toi et moi, avec ton écran partagé et tes trades sous les yeux.</p>
-      </div>
-      <div class="inc">
-        <div class="ic"><svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></div>
-        <h3>Suivi illimité par message</h3>
-        <p>Une question sur un trade en cours, un doute avant l'ouverture : tu écris, je réponds dans la journée du lundi au vendredi.</p>
-      </div>
-      <div class="inc">
-        <div class="ic"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 9h6v6H9z"/></svg></div>
-        <h3>L'outil de suivi inclus</h3>
-        <p>Le tableau de bord et le journal que j'utilise moi-même, offerts pendant toute la durée de l'accompagnement : import FTMO, statistiques, calendrier de P&amp;L.</p>
-      </div>
-      <div class="inc">
-        <div class="ic"><svg viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg></div>
-        <h3>Supports et modèles</h3>
-        <p>Trame de plan de trading, checklist pré-trade, tableau de suivi et fiches de session — prêts à l'emploi.</p>
-      </div>
-      <div class="inc">
-        <div class="ic"><svg viewBox="0 0 24 24"><path d="M12 3v18"/><path d="m7 8 5-5 5 5"/><circle cx="12" cy="19" r="2"/></svg></div>
-        <h3>Debrief vidéo de tes trades</h3>
-        <p>J'enregistre l'analyse de tes trades de la semaine, commentée. Tu la regardes autant de fois que tu veux.</p>
-      </div>
-      <div class="inc">
-        <div class="ic"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/></svg></div>
-        <h3>Accès au groupe privé</h3>
-        <p>Un canal réservé aux personnes accompagnées : setups partagés, entraide et sessions live occasionnelles.</p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ══════════════ DÉROULÉ ══════════════ -->
-<section id="deroule">
-  <div class="wrap narrow">
-    <div class="rv">
-      <div class="k">Comment ça se passe</div>
-      <h2 class="sec">De ta candidature<br>à ta première semaine.</h2>
-    </div>
-
-    <div class="tl rv">
-      <div class="tl-step">
-        <div class="tl-dot">1</div>
-        <div class="tl-txt">
-          <h3>Tu remplis le formulaire</h3>
-          <p>Cinq minutes, honnêtement. Plus tu es précis sur ta situation, plus l'appel sera utile.</p>
-        </div>
-      </div>
-      <div class="tl-step">
-        <div class="tl-dot">2</div>
-        <div class="tl-txt">
-          <h3>Je réponds sous 48 h</h3>
-          <p>Je lis chaque candidature moi-même. Si le profil colle, je t'envoie un lien pour réserver un créneau.</p>
-        </div>
-      </div>
-      <div class="tl-step">
-        <div class="tl-dot">3</div>
-        <div class="tl-txt">
-          <h3>Appel de découverte — 30 minutes, gratuit</h3>
-          <p>On regarde ton niveau, tes objectifs et ton temps disponible. Si je ne peux pas t'aider, je te le dis franchement.</p>
-        </div>
-      </div>
-      <div class="tl-step">
-        <div class="tl-dot">4</div>
-        <div class="tl-txt">
-          <h3>On démarre</h3>
-          <p>Accès à l'outil de suivi, premier appel planifié, audit de tes données. Ta première semaine commence dans la foulée.</p>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ══════════════ FORMATS ══════════════ -->
-<section id="formats">
-  <div class="wrap">
-    <div class="rv center">
-      <div class="k">Les formats</div>
-      <h2 class="sec">Trois façons de travailler ensemble.</h2>
-      <p class="sec-sub">Le tarif exact est confirmé pendant l'appel de découverte, une fois ton besoin cadré.</p>
-    </div>
-
-    <div class="plans rv">
-      <!-- [À REMPLIR] tes formats et tes tarifs -->
-      <div class="plan">
-        <h3>Audit flash</h3>
-        <div class="plan-for">Pour savoir ce qui cloche, sans engagement.</div>
-        <div class="price">Sur devis</div>
-        <div class="price-note">Séance unique de 90 minutes</div>
-        <ul>
-          <li><svg viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg>Analyse complète de ton historique</li>
-          <li><svg viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg>Rapport écrit avec tes trois priorités</li>
-          <li><svg viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg>Plan d'action sur 30 jours</li>
-          <li><svg viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg>Enregistrement de la séance</li>
-        </ul>
-        <a class="btn btn-outline" href="#candidature">Postuler</a>
-      </div>
-
-      <div class="plan hot">
-        <div class="plan-tag">LE PLUS CHOISI</div>
-        <h3>Accompagnement 12 semaines</h3>
-        <div class="plan-for">Le programme complet, du plan au compte financé.</div>
-        <div class="price">Sur devis</div>
-        <div class="price-note">Paiement en plusieurs fois possible</div>
-        <ul>
-          <li><svg viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg>12 appels 1-to-1 de 45 minutes</li>
-          <li><svg viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg>Suivi illimité par message en semaine</li>
-          <li><svg viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg>Debrief vidéo hebdomadaire de tes trades</li>
-          <li><svg viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg>Outil de suivi inclus</li>
-          <li><svg viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg>Tous les supports et modèles</li>
-          <li><svg viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg>Accès au groupe privé à vie</li>
-        </ul>
-        <a class="btn btn-primary" href="#candidature">Postuler</a>
-      </div>
-
-      <div class="plan">
-        <h3>Mentorat long terme</h3>
-        <div class="plan-for">Pour ceux qui veulent en faire un métier.</div>
-        <div class="price">Sur devis</div>
-        <div class="price-note">6 mois, sur sélection</div>
-        <ul>
-          <li><svg viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg>Tout l'accompagnement 12 semaines</li>
-          <li><svg viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg>Sessions live en direct avec moi</li>
-          <li><svg viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg>Stratégie multi-comptes et scaling</li>
-          <li><svg viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg>Suivi jusqu'aux premiers retraits</li>
-          <li><svg viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg>Disponibilité prioritaire</li>
-        </ul>
-        <a class="btn btn-outline" href="#candidature">Postuler</a>
-      </div>
-    </div>
-  </div>
-</section>
-
-
-<div class="cta-band rv">
-  <a class="btn btn-primary" href="#candidature">Postule maintenant</a>
-</div>
-
-<!-- ══════════════ POUR QUI ══════════════ -->
-<section id="pourqui">
-  <div class="wrap">
-    <div class="rv">
-      <div class="k">Pour qui</div>
-      <h2 class="sec">Je ne prends pas tout le monde.</h2>
-      <p class="sec-sub">Six places par promotion. Autant être clair tout de suite.</p>
-    </div>
-
-    <div class="fit rv">
-      <div class="fit-col yes">
-        <h3><svg viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg> C'est pour toi si…</h3>
-        <ul>
-          <li>Tu trades déjà, même mal, et tu as un historique à me montrer</li>
-          <li>Tu peux dégager au moins 5 heures par semaine, sérieusement</li>
-          <li>Tu acceptes qu'on te dise ce qui ne va pas, sans filtre</li>
-          <li>Tu vises la régularité, pas le coup d'éclat</li>
-          <li>Tu es prêt à tout journaliser, chaque jour, sans exception</li>
-        </ul>
-      </div>
-      <div class="fit-col no">
-        <h3><svg viewBox="0 0 24 24"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg> Ce n'est pas pour toi si…</h3>
-        <ul>
-          <li>Tu cherches des signaux à copier sans comprendre</li>
-          <li>Tu attends de doubler ton compte en un mois</li>
-          <li>Tu trades de l'argent dont tu as besoin pour vivre</li>
-          <li>Tu veux qu'on trade à ta place</li>
-          <li>Tu changes de méthode dès la première série de pertes</li>
-        </ul>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ══════════════ LE COACH ══════════════ -->
-<section id="coach">
-  <div class="wrap">
-    <div class="rv">
-      <div class="k">Qui t'accompagne</div>
-      <h2 class="sec" style="margin-bottom:30px;">Moi, et personne d'autre.</h2>
-    </div>
-
-    <!-- Pas de portrait pour l'instant : le texte occupe toute la largeur.
-         Pour en ajouter un, dépose img/coach.jpg et remets le bloc .coach-photo :
-           <div class="coach-photo"><div class="frame">
-             <img src="img/coach.jpg" alt="Portrait"
-                  onerror="window.__phFallback&&window.__phFallback(this,'img/coach.jpg')">
-           </div></div>
-         (la mise en page à deux colonnes se remet en place toute seule) -->
-    <div class="coach rv">
-      <div class="coach-txt">
-        <!-- [À COMPLÉTER] ajoute ce que tu veux — la trame est basée sur ce que tu m'as raconté -->
-        <p>
-          J'ai commencé le trading en autodidacte, comme la plupart. Des mois à sauter d'une
-          stratégie à l'autre, à cramer des comptes de démonstration puis des vrais, à croire
-          que le problème venait toujours du marché.
-        </p>
-        <p>
-          Ce qui a tout changé, ce n'est pas une stratégie secrète : c'est le jour où j'ai commencé
-          à <b>tout mesurer</b>. Chaque trade, chaque écart au plan, chaque décision prise sous
-          émotion. Six mois plus tard, je validais mon premier challenge <b>à 17 ans</b>, du
-          premier coup — puis la vérification, puis un premier retrait <b>29 jours après</b>.
-        </p>
-        <p>
-          C'est de là qu'est né l'outil de suivi que je fais utiliser à mes élèves — celui que j'aurais voulu avoir dès le début. J'ouvre
-          aujourd'hui six places, en individuel, pour transmettre exactement ce qui m'a fait
-          passer de « je tourne en rond » à un compte financé. Pas de promesse de rendement,
-          pas de vente de rêve : un cadre, des données, et quelqu'un qui regarde tes trades
-          avec toi jusqu'à ce que ça tienne.
-        </p>
-        <div class="coach-sign">— THOMAS</div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ══════════════ TÉMOIGNAGES ══════════════
-     Formulations validées par les cinq personnes concernées (août 2026).
-     Garde leurs accords écrits de côté.
-     Reste à préciser quand tu auras l'info : l'initiale du nom (.t-ava et
-     .t-name) et le contexte réel de chacun (.t-role, actuellement générique). -->
+<!-- ══════════════ 3. TÉMOIGNAGES ══════════════
+     Quatre vidéos, puis quatre photos en dessous.
+     Vidéos attendues : media/temoin-1.mp4 … temoin-4.mp4
+     Tant qu'un fichier manque, un cadre « vidéo à ajouter » s'affiche. -->
 <section id="temoignages">
   <div class="wrap">
     <div class="rv center">
-      <div class="k">Ils sont passés par là</div>
-      <h2 class="sec">Ce qu'en disent les traders<br>que j'ai accompagnés.</h2>
+      <h2 class="sec">Ils sont passés <span class="hl">par là.</span></h2>
+      <p class="sec-sub">Quatre traders que j'ai accompagnés, et ce qu'ils en disent eux-mêmes.</p>
     </div>
-  </div>
 
-  <div class="t-wrap rv">
-    <div class="t-fade l"></div>
-    <div class="t-fade r"></div>
-    <div class="t-track" id="t-track">
-
-      <div class="t-card">
-        <div class="t-stars"><svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01z"/></svg><svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01z"/></svg><svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01z"/></svg><svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01z"/></svg><svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01z"/></svg></div>
-        <div class="t-quote">« Il ne m'a pas donné une stratégie toute faite, il m'a expliqué la sienne jusqu'à ce que je comprenne <em>pourquoi</em> chaque règle existe. C'est la première fois que je savais quoi faire devant un graphique sans demander à quelqu'un. »</div>
-        <div class="t-who">
-          <div class="t-ava">E</div>
-          <div><div class="t-name">Ewen</div><div class="t-role">Accompagné en individuel</div></div>
+    <div class="vgrid rv">
+      <figure class="vcard">
+        <div class="vbox">
+          <video preload="metadata" playsinline poster=""><source src="media/temoin-1.mp4" type="video/mp4"></video>
+          <button class="vplay" type="button" aria-label="Lire le témoignage"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></button>
         </div>
-      </div>
+        <figcaption class="vcap">Ewen<span>La stratégie expliquée, pas donnée</span></figcaption>
+      </figure>
 
-      <div class="t-card">
-        <div class="t-stars"><svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01z"/></svg><svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01z"/></svg><svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01z"/></svg><svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01z"/></svg><svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01z"/></svg></div>
-        <div class="t-quote">« Ce qui m'a le plus servi, c'est le travail sur la gestion du risque. J'entrais beaucoup trop gros et je ne m'en rendais même pas compte. Il me l'a montré sur mes propres trades, chiffres à l'appui — impossible de discuter. »</div>
-        <div class="t-who">
-          <div class="t-ava">G</div>
-          <div><div class="t-name">Glenn</div><div class="t-role">Accompagné en individuel</div></div>
+      <figure class="vcard">
+        <div class="vbox">
+          <video preload="metadata" playsinline poster=""><source src="media/temoin-2.mp4" type="video/mp4"></video>
+          <button class="vplay" type="button" aria-label="Lire le témoignage"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></button>
         </div>
-      </div>
+        <figcaption class="vcap">Glenn<span>Le risque enfin sous contrôle</span></figcaption>
+      </figure>
 
-      <div class="t-card">
-        <div class="t-stars"><svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01z"/></svg><svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01z"/></svg><svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01z"/></svg><svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01z"/></svg><svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01z"/></svg></div>
-        <div class="t-quote">« Il est vraiment disponible. J'ai posé des questions bêtes pendant des semaines, il a répondu à chaque fois sans jamais me faire sentir que je faisais perdre du temps. Ça change tout quand tu débutes. »</div>
-        <div class="t-who">
-          <div class="t-ava">L</div>
-          <div><div class="t-name">Luis</div><div class="t-role">Accompagné en individuel</div></div>
+      <figure class="vcard">
+        <div class="vbox">
+          <video preload="metadata" playsinline poster=""><source src="media/temoin-3.mp4" type="video/mp4"></video>
+          <button class="vplay" type="button" aria-label="Lire le témoignage"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></button>
         </div>
-      </div>
+        <figcaption class="vcap">Luis<span>Des réponses, tous les jours</span></figcaption>
+      </figure>
 
-      <!-- Jonha est américain : son retour reste en anglais, avec la traduction en dessous.
-           C'est plus crédible qu'une citation traduite. -->
-      <div class="t-card">
-        <div class="t-stars"><svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01z"/></svg><svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01z"/></svg><svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01z"/></svg><svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01z"/></svg><svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01z"/></svg></div>
-        <div class="t-quote">« He walked me through his entire strategy, step by step — no fluff, no secret indicator. Just why he takes a trade and why he doesn't. The time zone was never an issue, he always made it work. »
-          <span style="display:block;margin-top:9px;font-size:12px;color:#6a6864;font-style:italic;">« Il m'a expliqué toute sa stratégie, étape par étape — pas de blabla, pas d'indicateur miracle. Juste pourquoi il prend un trade et pourquoi il n'en prend pas. Le décalage horaire n'a jamais été un problème. »</span>
+      <figure class="vcard">
+        <div class="vbox">
+          <video preload="metadata" playsinline poster=""><source src="media/temoin-4.mp4" type="video/mp4"></video>
+          <button class="vplay" type="button" aria-label="Lire le témoignage"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></button>
         </div>
-        <div class="t-who">
-          <div class="t-ava">J</div>
-          <div><div class="t-name">Jonha</div><div class="t-role">États-Unis — accompagné à distance</div></div>
-        </div>
-      </div>
+        <figcaption class="vcap">Jonha<span>Accompagné depuis les États-Unis</span></figcaption>
+      </figure>
+    </div>
 
-      <div class="t-card">
-        <div class="t-stars"><svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01z"/></svg><svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01z"/></svg><svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01z"/></svg><svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01z"/></svg><svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01z"/></svg></div>
-        <div class="t-quote">« J'avais déjà regardé des dizaines d'heures de vidéos sans rien appliquer. Avoir quelqu'un qui regarde ce que <em>toi</em> tu fais, et qui te dit où tu te plantes, ça n'a rien à voir. »</div>
-        <div class="t-who">
-          <div class="t-ava">L</div>
-          <div><div class="t-name">Louis</div><div class="t-role">Accompagné en individuel</div></div>
-        </div>
-      </div>
-
+    <!-- Les quatre photos : mes propres résultats, vérifiables -->
+    <div class="pgrid rv">
+      <figure class="pcard zoomable">
+        <img src="img/ftmo-challenge.jpg" alt="Certificat FTMO Challenge validé" loading="lazy"
+             onerror="window.__phFallback&&window.__phFallback(this,'img/ftmo-challenge.jpg')">
+        <figcaption>Challenge validé — 26 mai 2026</figcaption>
+      </figure>
+      <figure class="pcard zoomable">
+        <img src="img/ftmo-verification.jpg" alt="Certificat de vérification FTMO" loading="lazy"
+             onerror="window.__phFallback&&window.__phFallback(this,'img/ftmo-verification.jpg')">
+        <figcaption>Vérification validée — 5 juin 2026</figcaption>
+      </figure>
+      <figure class="pcard zoomable">
+        <img src="img/ftmo-payout.jpg" alt="Certificat de retrait FTMO" loading="lazy"
+             onerror="window.__phFallback&&window.__phFallback(this,'img/ftmo-payout.jpg')">
+        <figcaption>Premier retrait — 24 juin 2026</figcaption>
+      </figure>
+      <figure class="pcard zoomable">
+        <img src="img/historique.jpg" alt="Historique des trades" loading="lazy"
+             onerror="window.__phFallback&&window.__phFallback(this,'img/historique.jpg')">
+        <figcaption>Historique — +1 004,17 $</figcaption>
+      </figure>
     </div>
   </div>
 </section>
 
-<!-- ══════════════ PREMIÈRE PROMOTION ══════════════
-     Vient juste après les témoignages : ceux-ci prouvent que tu as déjà aidé
-     des gens, celle-ci explique pourquoi c'est le bon moment pour entrer. -->
-<section id="promo">
-  <div class="wrap narrow">
+<div class="cta-band rv">
+  <a class="btn btn-primary" href="#candidature">Postule maintenant</a>
+</div>
+
+<!-- ══════════════ 4. LE TRADING, C'EST QUOI ══════════════ -->
+<section id="cest-quoi">
+  <div class="wrap">
     <div class="rv center">
-      <div class="k">Première promotion</div>
-      <h2 class="sec">Tu ferais partie des premiers.</h2>
+      <h2 class="sec">Le trading ne récompense pas <span class="hl">la chance.</span><br>Il récompense la méthode.</h2>
       <p class="sec-sub">
-        Je n'accompagne pas depuis dix ans, et je ne vais pas prétendre le contraire.
-        J'ai aidé une poignée de traders jusqu'ici — leurs retours sont juste au-dessus —
-        et j'ouvre maintenant un format structuré. Entrer dans cette première promotion,
-        ça veut dire trois choses concrètes.
+        La plupart perdent parce qu'ils improvisent, pas parce qu'ils manquent de talent.
+        Ce qui sépare les deux, c'est un cadre écrit et tenu.
       </p>
     </div>
 
-    <div class="tl rv" style="margin-top:40px;">
-      <div class="tl-step">
-        <div class="tl-dot">01</div>
-        <div class="tl-txt">
-          <h3>Un tarif que je ne referai pas</h3>
-          <p>Les places de la première promotion sont nettement moins chères que ce que sera le tarif normal. C'est le prix de ton antériorité — et du fait que tu prends un pari sur moi.</p>
-        </div>
+    <div class="explain rv">
+      <div class="checks">
+        <h3>Le trading encadré, c'est :</h3>
+        <ul>
+          <li><svg viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg>Un setup unique, maîtrisé à fond</li>
+          <li><svg viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg>Un risque calculé avant chaque entrée</li>
+          <li><svg viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg>Des règles qui décident à ta place</li>
+          <li><svg viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg>Un journal qui rend tes erreurs visibles</li>
+          <li><svg viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg>Des décisions prises sur des chiffres</li>
+          <li><svg viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg>Un capital qui survit aux mauvaises séries</li>
+        </ul>
       </div>
-      <div class="tl-step">
-        <div class="tl-dot">02</div>
-        <div class="tl-txt">
-          <h3>Beaucoup plus de temps par personne</h3>
-          <p>Six places, pas cinquante. Tu n'attends pas ton tour, tu ne partages pas ton appel, et je réponds dans la journée.</p>
-        </div>
+
+      <!-- [PHOTO À CHOISIR] visuel de droite : capture de ton journal, de ton graphique, de ton dashboard -->
+      <div class="explain-visual">
+        <img src="img/explication.jpg" alt="" loading="lazy"
+             onerror="window.__phFallback&&window.__phFallback(this,'img/explication.jpg')">
       </div>
-      <div class="tl-step">
-        <div class="tl-dot">03</div>
-        <div class="tl-txt">
-          <h3>Ton avis façonne la suite</h3>
-          <p>Tu me dis ce qui marche et ce qui ne sert à rien, et ça change le programme pour de bon. En échange je te demanderai un retour honnête à la fin — bon ou mauvais.</p>
+    </div>
+  </div>
+
+  <div class="wrap" style="margin-top:78px;">
+    <div class="rv center">
+      <h2 class="sec">Ils exécutent, <span class="hl">ils progressent.</span></h2>
+      <p class="sec-sub">D'autres retours, à différents stades de l'accompagnement.</p>
+    </div>
+
+    <div class="vgrid rv">
+      <figure class="vcard">
+        <div class="vbox">
+          <video preload="metadata" playsinline poster=""><source src="media/temoin-5.mp4" type="video/mp4"></video>
+          <button class="vplay" type="button" aria-label="Lire le témoignage"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></button>
         </div>
+        <figcaption class="vcap">Louis<span>Enfin un plan écrit</span></figcaption>
+      </figure>
+      <figure class="vcard">
+        <div class="vbox">
+          <video preload="metadata" playsinline poster=""><source src="media/temoin-6.mp4" type="video/mp4"></video>
+          <button class="vplay" type="button" aria-label="Lire le témoignage"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></button>
+        </div>
+        <figcaption class="vcap">[Prénom]<span>[Son contexte]</span></figcaption>
+      </figure>
+      <figure class="vcard">
+        <div class="vbox">
+          <video preload="metadata" playsinline poster=""><source src="media/temoin-7.mp4" type="video/mp4"></video>
+          <button class="vplay" type="button" aria-label="Lire le témoignage"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></button>
+        </div>
+        <figcaption class="vcap">[Prénom]<span>[Son contexte]</span></figcaption>
+      </figure>
+      <figure class="vcard">
+        <div class="vbox">
+          <video preload="metadata" playsinline poster=""><source src="media/temoin-8.mp4" type="video/mp4"></video>
+          <button class="vplay" type="button" aria-label="Lire le témoignage"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></button>
+        </div>
+        <figcaption class="vcap">[Prénom]<span>[Son contexte]</span></figcaption>
+      </figure>
+    </div>
+  </div>
+</section>
+
+<div class="cta-band rv">
+  <a class="btn btn-primary" href="#candidature">Postule maintenant</a>
+</div>
+
+<!-- ══════════════ 5. LE PLAN ══════════════ -->
+<section id="plan">
+  <div class="wrap">
+    <div class="rv center">
+      <h2 class="sec">Ton plan pour viser <span class="hl">10 000 € par mois</span><br>en trading</h2>
+      <p class="sec-sub">
+        Quatre piliers, dans cet ordre. Aucun n'est optionnel, et aucun ne garantit un résultat :
+        le trading comporte un risque de perte en capital.
+      </p>
+    </div>
+
+    <div class="incl four rv">
+      <div class="inc">
+        <div class="ic"><svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div>
+        <h3>Accès direct à moi</h3>
+        <p>Je réponds moi-même, en message privé, du lundi au vendredi. Une question sur un trade en cours n'attend pas la semaine suivante.</p>
+      </div>
+      <div class="inc">
+        <div class="ic"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/></svg></div>
+        <h3>Sessions live chaque semaine</h3>
+        <p>On analyse le marché ensemble, en direct, avec tes trades à l'écran. Tu poses tes questions et tu obtiens une réponse franche.</p>
+      </div>
+      <div class="inc">
+        <div class="ic"><svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></div>
+        <h3>Le groupe privé</h3>
+        <p>Un canal réservé aux personnes accompagnées : setups partagés, entraide, et des gens qui traversent exactement les mêmes étapes que toi.</p>
+      </div>
+      <div class="inc">
+        <div class="ic"><svg viewBox="0 0 24 24"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg></div>
+        <h3>La méthode complète</h3>
+        <p>Tout ce qui m'a mené du compte démo au compte financé : plan de trading, gestion du risque, routine et passage de challenge.</p>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ══════════════ FAQ ══════════════ -->
-<section id="faq">
-  <div class="wrap narrow">
-    <div class="rv">
-      <div class="k">Questions fréquentes</div>
-      <h2 class="sec">Tout ce qu'on me demande<br>avant de postuler.</h2>
-    </div>
+<div class="cta-band rv">
+  <a class="btn btn-primary" href="#candidature">Postule maintenant</a>
+</div>
 
-    <div class="faq rv">
-      <!-- [À REMPLIR] tes questions/réponses -->
-      <div class="qa">
-        <button class="qa-head" type="button">Faut-il déjà savoir trader ?<svg class="qa-plus" viewBox="0 0 24 24"><path d="M12 5v14"/><path d="M5 12h14"/></svg></button>
-        <div class="qa-body"><p>Il faut avoir commencé. Je n'accompagne pas les débutants complets : tu dois avoir passé au moins quelques mois sur les marchés et avoir un historique de trades à me montrer, même mauvais. C'est le point de départ du travail.</p></div>
+<!-- ══════════════ 6. LA COMMUNAUTÉ ══════════════ -->
+<section id="communaute">
+  <div class="wrap">
+    <div class="bigcard rv">
+      <h2 class="sec">Une communauté <span class="hl">de traders</span><br>qui exécutent vraiment</h2>
+      <p>
+        La majorité des traders abandonnent parce qu'ils restent seuls devant leur écran.
+        Personne pour relire leurs trades, personne pour leur dire d'arrêter à temps.
+      </p>
+      <p>
+        Ici tu rejoins un groupe restreint où <b>chacun tient un journal, suit un plan et
+        rend des comptes.</b> Ce n'est pas un salon de signaux : c'est un endroit où l'on
+        travaille.
+      </p>
+      <p class="bigcard-punch">
+        Tu appliques.<br>
+        Tu mesures.<br>
+        Tu ajustes.
+      </p>
+      <p>
+        Comme tous ceux qui sont entrés avant toi. Ne reste pas seul à tourner en rond
+        pendant encore un an.
+      </p>
+      <a class="btn btn-primary" href="#candidature" style="margin-top:26px;">Postule maintenant</a>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════ 7. MON PARCOURS ══════════════ -->
+<section id="parcours">
+  <div class="wrap">
+    <div class="story rv">
+      <div class="story-txt">
+        <h2 class="sec">J'ai commencé exactement <span class="hl">au même endroit que toi.</span></h2>
+        <p>Pas de capital, pas de réseau, personne pour m'expliquer quoi que ce soit.</p>
+        <p>
+          J'ai tout essayé pour m'en sortir autrement : les signaux payants, les stratégies
+          trouvées sur YouTube, les comptes démo relancés dix fois. J'ai cramé des comptes,
+          j'ai revenge tradé, j'ai recommencé.
+        </p>
+        <p>
+          Aucun résultat, jusqu'au jour où j'ai arrêté de chercher la martingale et où j'ai
+          commencé à <b>tout écrire et tout mesurer</b>. Six mois plus tard, je validais mon
+          premier challenge à 17 ans, du premier coup, puis mon premier retrait.
+        </p>
+        <p>C'est exactement ce chemin que je te fais parcourir, sans les détours.</p>
+        <a class="btn btn-primary" href="#candidature" style="margin-top:24px;">Postule maintenant</a>
       </div>
-      <div class="qa">
-        <button class="qa-head" type="button">Combien de temps par semaine ?<svg class="qa-plus" viewBox="0 0 24 24"><path d="M12 5v14"/><path d="M5 12h14"/></svg></button>
-        <div class="qa-body"><p>Compte 5 à 8 heures : la session de trading, le debrief quotidien de 10 minutes, l'appel hebdomadaire et le travail entre deux. En dessous de 5 heures, le format ne fonctionne pas et je préfère te le dire avant.</p></div>
-      </div>
-      <div class="qa">
-        <button class="qa-head" type="button">Est-ce que tu garantis des résultats ?<svg class="qa-plus" viewBox="0 0 24 24"><path d="M12 5v14"/><path d="M5 12h14"/></svg></button>
-        <div class="qa-body"><p>Non, et personne ne le peut sérieusement. Le trading comporte un risque de perte en capital. Ce que je garantis, c'est un cadre, un suivi réel et un regard honnête sur ce que tu fais. Les résultats dépendent de ton exécution.</p></div>
-      </div>
-      <div class="qa">
-        <button class="qa-head" type="button">Quels marchés couvres-tu ?<svg class="qa-plus" viewBox="0 0 24 24"><path d="M12 5v14"/><path d="M5 12h14"/></svg></button>
-        <div class="qa-body"><p>Forex, indices et futures, principalement en intraday et en swing. Si tu trades exclusivement des cryptos ou de l'investissement long terme, je ne suis pas la bonne personne — je te le dirai à l'appel.</p></div>
-      </div>
-      <div class="qa">
-        <button class="qa-head" type="button">Pourquoi une candidature et pas un simple achat ?<svg class="qa-plus" viewBox="0 0 24 24"><path d="M12 5v14"/><path d="M5 12h14"/></svg></button>
-        <div class="qa-body"><p>Parce que je travaille avec six personnes à la fois, en individuel. Si le format ne te correspond pas, ça ne sert ni à toi ni à moi. L'appel de découverte sert exactement à vérifier ça, et il est gratuit.</p></div>
-      </div>
-      <div class="qa">
-        <button class="qa-head" type="button">Le paiement en plusieurs fois est-il possible ?<svg class="qa-plus" viewBox="0 0 24 24"><path d="M12 5v14"/><path d="M5 12h14"/></svg></button>
-        <div class="qa-body"><p>Oui, sur l'accompagnement 12 semaines et le mentorat. Les modalités sont détaillées pendant l'appel, sans frais cachés.</p></div>
-      </div>
-      <div class="qa">
-        <button class="qa-head" type="button">L'outil de suivi est-il obligatoire ?<svg class="qa-plus" viewBox="0 0 24 24"><path d="M12 5v14"/><path d="M5 12h14"/></svg></button>
-        <div class="qa-body"><p>Oui, c'est le support du suivi : c'est là que je vois tes trades et tes stats entre deux appels. Il est inclus pendant tout l'accompagnement, tu n'as rien à payer en plus.</p></div>
+
+      <!-- [PHOTOS À CHOISIR] deux photos « avant » : toi au travail, en cours, devant ton premier écran… -->
+      <div class="story-photos">
+        <div class="sp">
+          <img src="img/avant-1.jpg" alt="" loading="lazy"
+               onerror="window.__phFallback&&window.__phFallback(this,'img/avant-1.jpg')">
+        </div>
+        <div class="sp">
+          <img src="img/avant-2.jpg" alt="" loading="lazy"
+               onerror="window.__phFallback&&window.__phFallback(this,'img/avant-2.jpg')">
+        </div>
       </div>
     </div>
   </div>
@@ -1700,7 +1393,7 @@ window.__phFallback = function (img, path) {
 <!-- ══════════════ PIED DE PAGE ══════════════ -->
 <footer>
   <div class="foot-links">
-    <a href="#programme">Programme</a>
+    <a href="#temoignages">Témoignages</a>
     <a href="#candidature">Postuler</a>
     <a href="cgv.html">CGV de l'accompagnement</a>
     <a href="confidentialite.html">Politique de confidentialité</a>
@@ -1785,11 +1478,44 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   });
 
+  /* ── Témoignages vidéo : lecture au clic, cadre d'attente si le fichier manque ── */
+  document.querySelectorAll('.vbox').forEach(function (box) {
+    var v = box.querySelector('video');
+    var btn = box.querySelector('.vplay');
+    if (!v || !btn) return;
+
+    /* Aucun fichier déposé : on remplace par un cadre discret plutôt que
+       de laisser un rectangle noir avec un bouton qui ne fait rien. */
+    v.addEventListener('error', function () {
+      var src = v.querySelector('source');
+      var chemin = src ? src.getAttribute('src') : 'media/…';
+      v.remove(); btn.remove();
+      var ph = document.createElement('div');
+      ph.className = 'ph';
+      ph.innerHTML =
+        '<svg viewBox="0 0 24 24"><path d="m15 10 4.55-2.27A1 1 0 0 1 21 8.6v6.8a1 1 0 0 1-1.45.87L15 14"/>' +
+        '<rect x="3" y="6" width="12" height="12" rx="2"/></svg>' +
+        '<span>Vidéo à ajouter<br>' + chemin + '</span>';
+      box.appendChild(ph);
+    }, true);
+
+    btn.addEventListener('click', function () {
+      box.classList.add('playing');
+      v.controls = true;
+      var pr = v.play(); if (pr && pr.catch) pr.catch(function () {});
+    });
+    v.addEventListener('ended', function () {
+      box.classList.remove('playing');
+      v.controls = false;
+      try { v.currentTime = 0; } catch (e) {}
+    });
+  });
+
   /* ── Preuves : agrandissement au clic ── */
   var lb = document.getElementById('lb');
   var lbImg = document.getElementById('lb-img');
   function closeLb() { lb.classList.remove('on'); document.body.style.overflow = ''; }
-  document.querySelectorAll('.proof.zoomable').forEach(function (fig) {
+  document.querySelectorAll('.proof.zoomable, .pcard.zoomable').forEach(function (fig) {
     fig.addEventListener('click', function () {
       var img = fig.querySelector('img');
       if (!img) return;            /* image pas encore déposée : rien à agrandir */
