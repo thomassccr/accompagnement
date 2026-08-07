@@ -64,8 +64,10 @@ Deux garde-fous, volontaires :
   Supabase est injoignable, le candidat reste sur la page et reçoit le lien de
   repli par email. Sans ça, une panne de base t'aurait fait perdre la
   candidature *et* le candidat.
-- **Un bouton « Continuer » s'affiche pendant l'attente**, au cas où le
-  navigateur bloque le départ automatique.
+- **Le bouton de l'écran de confirmation devient « Accéder à 4 Edge »** et
+  pointe vers la page d'arrivée, au cas où le navigateur bloque le départ
+  automatique. Tant que `REDIRECT_URL` est vide, il affiche « Revoir le
+  programme » et renvoie vers le plan : jamais de bouton mort.
 
 L'adresse doit être complète, avec `https://`. Une adresse sans protocole
 (`exemple.com/merci`) serait interprétée comme un dossier de ton propre site.

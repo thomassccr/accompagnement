@@ -1161,8 +1161,11 @@ window.__phFallback = function (img, path) {
         <h3>Candidature bien reçue.</h3>
         <p>Je lis chaque candidature moi-même. Si ton profil correspond, tu reçois un email sous 48 heures avec un lien pour réserver ton appel de découverte.</p>
         <p style="font-size:13.5px;color:#6a6864;">Pense à vérifier tes spams — c'est là que finissent la moitié de mes réponses.</p>
+        <!-- Le bouton devient « Accéder à 4 Edge » et pointe vers la page
+             d'arrivée dès que CONFIG.REDIRECT_URL est renseignée. Tant qu'elle
+             est vide, il renvoie vers le programme : pas de bouton mort. -->
         <div class="next" id="apply-next">
-          <a class="btn btn-outline" href="#plan">Revoir le programme</a>
+          <a class="btn btn-outline" id="apply-cta" href="#plan">Revoir le programme</a>
         </div>
       </div>
     </div>
@@ -1881,11 +1884,11 @@ document.addEventListener('DOMContentLoaded', function () {
     if (!url) return;
 
     var delai = Math.max(0, Number(CONFIG.REDIRECT_DELAI) || 0) * 1000;
-    var zone  = document.getElementById('apply-next');
-    if (zone) {
-      zone.innerHTML =
-        '<p style="font-size:13.5px;color:#8a8680;margin-bottom:14px;">Redirection en cours…</p>' +
-        '<a class="btn btn-primary" href="' + url + '">Continuer</a>';
+    var cta   = document.getElementById('apply-cta');
+    if (cta) {
+      cta.href = url;
+      cta.textContent = 'Accéder à 4 Edge';
+      cta.className = 'btn btn-primary';
     }
     setTimeout(function () { window.location.href = url; }, delai);
   }
