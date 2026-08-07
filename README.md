@@ -22,7 +22,7 @@ supabase-schema.sql   à exécuter une fois pour recevoir les candidatures
 [vercel.com/new](https://vercel.com/new) → importe ce dépôt → *Deploy*. Rien à configurer :
 Vercel détecte un site statique. Chaque commit redéploie automatiquement.
 
-Adresse du site : **https://4edge.vercel.app**
+Adresse du site : **https://4edgee.vercel.app**
 
 Pour la changer : projet Vercel → onglet **Domains** → *Add*. Renommer le projet
 ne change pas l'adresse, ce sont deux réglages distincts. Après un changement,
