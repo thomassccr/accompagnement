@@ -652,20 +652,21 @@ window.__phFallback = function (img, path) {
      exactement au centre de la page, malgré des libellés de longueurs
      très différentes. Alignés par le haut pour que les grands chiffres
      restent sur la même ligne quand un libellé passe sur deux lignes. */
-  .stats { gap:0; align-items:flex-start; }
-  .stats > div:not(.sep) { width:250px; flex:0 0 250px; text-align:center; }
-  .stats .sep { margin:6px 26px 0; }
-  @media (max-width:620px){
-    .stats > div:not(.sep) { width:180px; flex:0 0 180px; }
-    .stats .sep { margin:6px 14px 0; }
-  }
+  /* Deux blocs de largeur identique de part et d'autre du trait : celui-ci
+     tombe alors exactement au centre de la page malgré des libellés de
+     longueurs très différentes. Le trait court sur toute la hauteur. */
+  .stats { gap:0; align-items:stretch; }
+  .stats > div:not(.sep) { width:270px; flex:0 0 270px; text-align:center; }
   .stats .val {
     font-family:'Inter',sans-serif; font-weight:800; letter-spacing:-.035em;
-    font-size:clamp(26px,3.4vw,40px); margin-bottom:6px;
+    font-size:clamp(30px,4vw,52px); margin-bottom:12px;
   }
-  .stats > div > div:last-child { font-size:13px; color:#8a8680; }
-  .stats .sep { height:46px; background:rgba(255,255,255,.14); }
-  @media (max-width:700px){ .stats { gap:22px; } }
+  .stats > div > div:last-child { font-size:16px; color:#c8c4be; line-height:1.4; }
+  .stats .sep { width:1px; height:auto; align-self:stretch; background:rgba(255,255,255,.16); margin:0; }
+  @media (max-width:700px){
+    .stats > div:not(.sep) { width:170px; flex:0 0 170px; }
+    .stats > div > div:last-child { font-size:13.5px; }
+  }
 
   /* ── Bandeau d'appel à l'action, répété entre les sections ── */
   .cta-band { position:relative; z-index:1; text-align:center; padding:4px 20px 26px; }
