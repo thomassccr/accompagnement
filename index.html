@@ -462,8 +462,19 @@ window.__phFallback = function (img, path) {
     box-shadow:0 34px 100px rgba(0,0,0,.55);
   }
   .apply-left { padding:38px 36px 32px; min-width:0; }
-  .apply-right { position:relative; background:#0b0c0e; min-height:100%; }
-  .apply-right img { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; display:block; }
+  .apply-right { position:relative; background:#0b0c0e; min-height:100%; overflow:hidden; }
+  /* Une image par question, empilées. On fait glisser l'opacité de l'une à
+     l'autre à chaque réponse : le panneau vit au rythme du questionnaire. */
+  .apply-right img {
+    position:absolute; inset:0; width:100%; height:100%; object-fit:cover; display:block;
+    opacity:0; transform:scale(1.05);
+    transition:opacity .5s ease, transform 1.4s cubic-bezier(.16,1,.3,1);
+  }
+  .apply-right img.on { opacity:1; transform:scale(1); }
+  @media (prefers-reduced-motion:reduce){
+    .apply-right img { transition:opacity .2s linear; transform:none; }
+    .apply-right img.on { transform:none; }
+  }
   .apply-right::after {
     content:''; position:absolute; inset:0;
     background:linear-gradient(90deg, rgba(5,5,5,.85) 0%, rgba(5,5,5,.15) 45%, rgba(5,5,5,0) 100%);
@@ -1150,9 +1161,9 @@ window.__phFallback = function (img, path) {
       </form>
 
         </div><!-- /apply-left -->
-        <div class="apply-right" aria-hidden="true">
-          <img src="img/setup.jpg" alt="" onerror="this.remove()">
-        </div>
+        <!-- Le visuel change à chaque question. Les images sont construites en
+             JS à partir de img/questionnaire/ — voir le bloc « visuel » plus bas. -->
+        <div class="apply-right" id="apply-visual" aria-hidden="true"></div>
       </div><!-- /apply-split -->
 
       <!-- Écran de confirmation -->
@@ -1719,8 +1730,47 @@ document.addEventListener('DOMContentLoaded', function () {
   var split  = document.getElementById('apply-split');
   var step = 0;
 
+  /* ── Le visuel du panneau de droite, une image par question ──
+     Dépose tes photos dans img/questionnaire/ : 01.jpg, 02.jpg, … une par
+     étape du formulaire. Celles qui manquent retombent sur img/setup.jpg,
+     donc le panneau n'est jamais vide. Le chargement est différé : on ne
+     télécharge que l'image affichée et la suivante. */
+  var visual = document.getElementById('apply-visual');
+  var QIMG_FALLBACK = 'img/setup.jpg';
+  var shots = [];
+
+  if (visual) {
+    panes.forEach(function (p, i) {
+      var n = (i + 1 < 10 ? '0' : '') + (i + 1);
+      var im = document.createElement('img');
+      im.alt = '';
+      im.setAttribute('data-src', 'img/questionnaire/' + n + '.jpg');
+      im.addEventListener('error', function () {
+        /* Photo pas encore fournie : on retombe sur le visuel par défaut,
+           et on ne réessaie pas (sinon boucle si le repli manque aussi). */
+        if (im.getAttribute('data-fallback')) { im.remove(); return; }
+        im.setAttribute('data-fallback', '1');
+        im.src = QIMG_FALLBACK;
+      });
+      visual.appendChild(im);
+      shots.push(im);
+    });
+  }
+
+  function loadShot(i) {
+    var im = shots[i];
+    if (im && !im.src) im.src = im.getAttribute('data-src');
+  }
+
+  function showShot(i) {
+    loadShot(i);
+    loadShot(i + 1);   /* la suivante est prête avant même d'être demandée */
+    shots.forEach(function (im, j) { im.classList.toggle('on', j === i); });
+  }
+
   function render() {
     panes.forEach(function (p, i) { p.classList.toggle('on', i === step); });
+    showShot(step);
     var last = step === panes.length - 1;
     prevBt.hidden = step === 0;
     nextBt.hidden = last;
@@ -1730,7 +1780,7 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 
   function goTo(i) {
-    step = i;
+    step = Math.max(0, Math.min(i, panes.length - 1));
     render();
     alrt.classList.remove('on');
     /* On recadre sur le haut du formulaire, pas sur le champ : moins brutal */
@@ -1760,7 +1810,12 @@ document.addEventListener('DOMContentLoaded', function () {
       var pane = panes[step];
       if (!pane || !pane.contains(r) || step === panes.length - 1) return;
       if (pane.querySelectorAll('input:not([type=radio]), textarea').length) return;
-      setTimeout(function () { if (!validate(pane)) goTo(step + 1); }, 260);
+      /* Si le visiteur a cliqué « Suivant » ou tapé Entrée dans l'intervalle,
+         il a déjà changé d'écran : on ne l'avance pas une seconde fois. */
+      setTimeout(function () {
+        if (panes[step] !== pane) return;
+        if (!validate(pane)) goTo(step + 1);
+      }, 260);
     });
   });
 
