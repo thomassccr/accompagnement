@@ -648,9 +648,17 @@ window.__phFallback = function (img, path) {
   @media (max-width:700px){ .hero-media { aspect-ratio:4 / 3; border-radius:16px; } }
 
   /* ── Rangée de chiffres ── */
-  .stats { gap:38px; align-items:flex-start; }
-  .stats > div:not(.sep) { max-width:230px; }
-  .stats .sep { margin-top:6px; }
+  /* Les deux blocs prennent la même largeur : le séparateur tombe alors
+     exactement au centre de la page, malgré des libellés de longueurs
+     très différentes. Alignés par le haut pour que les grands chiffres
+     restent sur la même ligne quand un libellé passe sur deux lignes. */
+  .stats { gap:0; align-items:flex-start; }
+  .stats > div:not(.sep) { width:250px; flex:0 0 250px; text-align:center; }
+  .stats .sep { margin:6px 26px 0; }
+  @media (max-width:620px){
+    .stats > div:not(.sep) { width:180px; flex:0 0 180px; }
+    .stats .sep { margin:6px 14px 0; }
+  }
   .stats .val {
     font-family:'Inter',sans-serif; font-weight:800; letter-spacing:-.035em;
     font-size:clamp(26px,3.4vw,40px); margin-bottom:6px;
