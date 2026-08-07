@@ -688,6 +688,38 @@ window.__phFallback = function (img, path) {
   .cta-band { position:relative; z-index:1; text-align:center; padding:4px 20px 26px; }
   .cta-band .btn { min-width:230px; }
 
+  /* ── Dernier appel, juste avant le pied de page ── */
+  .final-cta { position:relative; z-index:1; padding:10px 20px 54px; }
+  .final-card {
+    max-width:1080px; margin:0 auto; text-align:center;
+    border-radius:30px; padding:62px 44px 58px;
+    background:
+      radial-gradient(120% 100% at 50% 0%, rgba(61,142,240,.16) 0%, rgba(61,142,240,.03) 42%, transparent 70%),
+      linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,.012));
+    border:1px solid rgba(255,255,255,.1);
+    box-shadow:0 40px 120px rgba(0,0,0,.6);
+  }
+  .final-card h2 {
+    font-family:'Inter',sans-serif; font-weight:800; letter-spacing:-.035em;
+    font-size:clamp(30px,4.6vw,58px); line-height:1.08; color:#fff; margin-bottom:26px;
+  }
+  .final-card h2 .hl {
+    background:linear-gradient(180deg,#a6cdff 8%,#3d8ef0 92%);
+    -webkit-background-clip:text; background-clip:text; color:transparent;
+  }
+  .final-card p {
+    font-size:clamp(15px,1.5vw,19px); line-height:1.6; color:#c8c4be;
+    max-width:640px; margin:0 auto 34px;
+  }
+  .final-card p b { color:#fff; font-weight:700; }
+  .final-card .btn { min-width:250px; }
+  @media (max-width:640px){
+    .final-cta { padding:6px 16px 40px; }
+    .final-card { padding:40px 22px 38px; border-radius:22px; }
+    .final-card h2 { margin-bottom:18px; }
+    .final-card p { margin-bottom:26px; }
+  }
+
   /* ── Cartes « ce qui est inclus » : dégradé indigo et icône en médaillon ── */
   .inc {
     background:
@@ -1428,8 +1460,16 @@ window.__phFallback = function (img, path) {
   </div>
 </section>
 
-<div class="cta-band rv">
-  <a class="btn btn-primary" href="#candidature">Postule maintenant</a>
+<!-- ══════════════ DERNIER APPEL ══════════════ -->
+<div class="final-cta rv">
+  <div class="final-card">
+    <h2>Rejoins 4 Edge <span class="hl">Maintenant</span></h2>
+    <p>
+      Réserve ton appel de découverte gratuit, et commence à travailler
+      <b>ta méthode</b> avec un cadre clair et quelqu'un qui suit tes trades.
+    </p>
+    <a class="btn btn-primary" href="#candidature">Postule Maintenant</a>
+  </div>
 </div>
 
 <!-- ══════════════ PIED DE PAGE ══════════════ -->
