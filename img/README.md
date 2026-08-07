@@ -17,9 +17,7 @@ En place — ailleurs :
 - avant-1.jpg             Section 7, photo de gauche
 - avant-2.jpg             Section 7, photo de droite
                           Format vertical, affichées légèrement inclinées et
-                          recadrées en 3/4. Une légende courte s'affiche sous
-                          chacune : elle se modifie dans index.html, section
-                          « parcours », balises <figcaption>.
+                          recadrées en 3/4.
 - coach.jpg               Ton portrait (optionnel, bloc actuellement retiré)
 
 Section 8 — bandeau « Résultats récents », défilement continu :

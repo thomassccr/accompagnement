@@ -732,8 +732,6 @@ window.__phFallback = function (img, path) {
   .vplay svg { width:24px; height:24px; fill:#fff; margin-left:3px; }
   .vplay:hover { transform:translate(-50%,-50%) scale(1.07); }
   .vbox.playing .vplay { display:none; }
-  .vcap { text-align:center; margin-top:15px; font-family:'Inter',sans-serif; font-weight:700; font-size:14.5px; color:#e8e4de; letter-spacing:-.015em; }
-  .vcap span { display:block; margin-top:5px; font-weight:400; font-size:12.5px; color:#8a8680; letter-spacing:0; }
   @media (max-width:1000px){ .vgrid { grid-template-columns:repeat(2,1fr); } }
   @media (max-width:520px){ .vgrid { grid-template-columns:1fr; } }
 
@@ -746,11 +744,6 @@ window.__phFallback = function (img, path) {
   .pcard.zoomable { cursor:zoom-in; }
   .pcard:hover { border-color:rgba(49,130,234,.35); transform:translateY(-3px); }
   .pcard img { width:100%; aspect-ratio:1 / 1.414; object-fit:cover; object-position:top center; display:block; }
-  .pcard figcaption {
-    padding:13px 15px 15px; border-top:1px solid rgba(255,255,255,.06);
-    font-family:'DM Mono',monospace; font-size:10.5px; letter-spacing:.08em;
-    text-transform:uppercase; color:#7a7873; text-align:center;
-  }
   @media (max-width:1000px){ .pgrid { grid-template-columns:repeat(2,1fr); } }
   @media (max-width:520px){ .pgrid { grid-template-columns:1fr; } }
 
@@ -811,12 +804,6 @@ window.__phFallback = function (img, path) {
   }
   .sp img { width:100%; aspect-ratio:3 / 4; object-fit:cover; display:block; }
   .sp .ph { aspect-ratio:3 / 4; }
-  .sp figcaption {
-    padding:12px 14px 13px; border-top:1px solid rgba(255,255,255,.07);
-    font-family:'DM Mono',monospace; font-size:10.5px; letter-spacing:.08em;
-    text-transform:uppercase; color:#7a7873; text-align:center;
-  }
-  .sp figcaption:empty { display:none; }
   .sp:first-child { transform:rotate(-3deg); }
   .sp:last-child  { transform:rotate(3deg); }
 
@@ -1204,7 +1191,6 @@ window.__phFallback = function (img, path) {
           <video preload="metadata" playsinline poster=""><source src="media/temoin-1.mp4" type="video/mp4"></video>
           <button class="vplay" type="button" aria-label="Lire le témoignage"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></button>
         </div>
-        <figcaption class="vcap">Lucas<span>Accompagné en individuel</span></figcaption>
       </figure>
 
       <figure class="vcard">
@@ -1212,7 +1198,6 @@ window.__phFallback = function (img, path) {
           <video preload="metadata" playsinline poster=""><source src="media/temoin-2.mp4" type="video/mp4"></video>
           <button class="vplay" type="button" aria-label="Lire le témoignage"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></button>
         </div>
-        <figcaption class="vcap">Maxime<span>Accompagné en individuel</span></figcaption>
       </figure>
 
       <figure class="vcard">
@@ -1220,7 +1205,6 @@ window.__phFallback = function (img, path) {
           <video preload="metadata" playsinline poster=""><source src="media/temoin-3.mp4" type="video/mp4"></video>
           <button class="vplay" type="button" aria-label="Lire le témoignage"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></button>
         </div>
-        <figcaption class="vcap">Nathan<span>Accompagné en individuel</span></figcaption>
       </figure>
 
       <figure class="vcard">
@@ -1228,7 +1212,6 @@ window.__phFallback = function (img, path) {
           <video preload="metadata" playsinline poster=""><source src="media/temoin-4.mp4" type="video/mp4"></video>
           <button class="vplay" type="button" aria-label="Lire le témoignage"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></button>
         </div>
-        <figcaption class="vcap">Hugo<span>Accompagné à distance</span></figcaption>
       </figure>
     </div>
 
@@ -1237,22 +1220,18 @@ window.__phFallback = function (img, path) {
       <figure class="pcard zoomable">
         <img src="img/ftmo-challenge.jpg" alt="Certificat FTMO Challenge validé" loading="lazy"
              onerror="window.__phFallback&&window.__phFallback(this,'img/ftmo-challenge.jpg')">
-        <figcaption>Challenge validé — 26 mai 2026</figcaption>
       </figure>
       <figure class="pcard zoomable">
         <img src="img/ftmo-verification.jpg" alt="Certificat de vérification FTMO" loading="lazy"
              onerror="window.__phFallback&&window.__phFallback(this,'img/ftmo-verification.jpg')">
-        <figcaption>Vérification validée — 5 juin 2026</figcaption>
       </figure>
       <figure class="pcard zoomable">
         <img src="img/ftmo-payout.jpg" alt="Certificat de retrait FTMO" loading="lazy"
              onerror="window.__phFallback&&window.__phFallback(this,'img/ftmo-payout.jpg')">
-        <figcaption>Premier retrait — 24 juin 2026</figcaption>
       </figure>
       <figure class="pcard zoomable">
         <img src="img/historique.jpg" alt="Historique des trades" loading="lazy"
              onerror="window.__phFallback&&window.__phFallback(this,'img/historique.jpg')">
-        <figcaption>Historique — +1 004,17 $</figcaption>
       </figure>
     </div>
   </div>
@@ -1314,28 +1293,24 @@ window.__phFallback = function (img, path) {
           <video preload="metadata" playsinline poster=""><source src="media/temoin-5.mp4" type="video/mp4"></video>
           <button class="vplay" type="button" aria-label="Lire le témoignage"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></button>
         </div>
-        <figcaption class="vcap">Théo<span>Accompagné en individuel</span></figcaption>
       </figure>
       <figure class="vcard">
         <div class="vbox">
           <video preload="metadata" playsinline poster=""><source src="media/temoin-6.mp4" type="video/mp4"></video>
           <button class="vplay" type="button" aria-label="Lire le témoignage"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></button>
         </div>
-        <figcaption class="vcap">Enzo<span>Accompagné en individuel</span></figcaption>
       </figure>
       <figure class="vcard">
         <div class="vbox">
           <video preload="metadata" playsinline poster=""><source src="media/temoin-7.mp4" type="video/mp4"></video>
           <button class="vplay" type="button" aria-label="Lire le témoignage"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></button>
         </div>
-        <figcaption class="vcap">Adrien<span>Accompagné en individuel</span></figcaption>
       </figure>
       <figure class="vcard">
         <div class="vbox">
           <video preload="metadata" playsinline poster=""><source src="media/temoin-8.mp4" type="video/mp4"></video>
           <button class="vplay" type="button" aria-label="Lire le témoignage"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></button>
         </div>
-        <figcaption class="vcap">Raphaël<span>Accompagné en individuel</span></figcaption>
       </figure>
     </div>
   </div>
@@ -1434,19 +1409,15 @@ window.__phFallback = function (img, path) {
         <a class="btn btn-primary" href="#candidature" style="margin-top:24px;">Postule maintenant</a>
       </div>
 
-      <!-- Deux photos verticales, légèrement inclinées.
-           [À REMPLIR] la légende sous chaque photo : une poignée de mots qui
-           situe le moment ou le lieu. Laisse vide pour ne rien afficher. -->
+      <!-- Deux photos verticales, légèrement inclinées. -->
       <div class="story-photos">
         <figure class="sp">
           <img src="img/avant-1.jpg" alt="" loading="lazy"
                onerror="window.__phFallback&&window.__phFallback(this,'img/avant-1.jpg')">
-          <figcaption>Entre deux cours</figcaption>
         </figure>
         <figure class="sp">
           <img src="img/avant-2.jpg" alt="" loading="lazy"
                onerror="window.__phFallback&&window.__phFallback(this,'img/avant-2.jpg')">
-          <figcaption>Quelques mois plus tard</figcaption>
         </figure>
       </div>
     </div>
