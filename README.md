@@ -22,6 +22,14 @@ supabase-schema.sql   à exécuter une fois pour recevoir les candidatures
 [vercel.com/new](https://vercel.com/new) → importe ce dépôt → *Deploy*. Rien à configurer :
 Vercel détecte un site statique. Chaque commit redéploie automatiquement.
 
+Adresse du site : **https://4edge.vercel.app**
+
+Pour la changer : projet Vercel → onglet **Domains** → *Add*. Renommer le projet
+ne change pas l'adresse, ce sont deux réglages distincts. Après un changement,
+mets à jour dans `index.html` les balises `canonical`, `og:url`, `og:image` et
+`twitter:image` — elles contiennent l'adresse en dur, c'est ce qui permet à
+WhatsApp, Instagram ou Discord d'afficher un aperçu quand tu partages le lien.
+
 **GitHub Pages** (gratuit, nécessite un dépôt public)
 Settings → Pages → Source : `main`, dossier `/ (root)` → Save.
 Le site sort sur `https://<utilisateur>.github.io/accompagnement/`.
