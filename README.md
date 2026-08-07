@@ -38,6 +38,30 @@ récupérer tes candidatures depuis un navigateur. Tu les consultes depuis Supab
 Dans `index.html`, bloc `CONFIG` en bas de fichier, remplace `contact@exemple.com` par ton
 adresse email : elle sert de secours si Supabase est injoignable.
 
+### Envoyer le candidat sur une autre page après le questionnaire
+
+Dans `index.html`, bloc `CONFIG` en bas de fichier :
+
+```js
+REDIRECT_URL:   'https://exemple.com/merci',   // la page d'arrivée
+REDIRECT_DELAI: 2                              // secondes avant le départ
+```
+
+Laisse `REDIRECT_URL` vide pour que le candidat reste sur l'écran de confirmation
+du site, comme aujourd'hui. Mets `REDIRECT_DELAI` à `0` pour partir immédiatement.
+
+Deux garde-fous, volontaires :
+
+- **La redirection ne part que si la candidature a bien été enregistrée.** Si
+  Supabase est injoignable, le candidat reste sur la page et reçoit le lien de
+  repli par email. Sans ça, une panne de base t'aurait fait perdre la
+  candidature *et* le candidat.
+- **Un bouton « Continuer » s'affiche pendant l'attente**, au cas où le
+  navigateur bloque le départ automatique.
+
+L'adresse doit être complète, avec `https://`. Une adresse sans protocole
+(`exemple.com/merci`) serait interprétée comme un dossier de ton propre site.
+
 ### Recevoir un email à chaque candidature
 
 Supabase enregistre, mais ne prévient pas. Pour être alerté, on branche un webhook sur

@@ -1156,8 +1156,8 @@ window.__phFallback = function (img, path) {
         <h3>Candidature bien reçue.</h3>
         <p>Je lis chaque candidature moi-même. Si ton profil correspond, tu reçois un email sous 48 heures avec un lien pour réserver ton appel de découverte.</p>
         <p style="font-size:13.5px;color:#6a6864;">Pense à vérifier tes spams — c'est là que finissent la moitié de mes réponses.</p>
-        <div class="next">
-          <a class="btn btn-outline" href="#programme">Revoir le programme</a>
+        <div class="next" id="apply-next">
+          <a class="btn btn-outline" href="#plan">Revoir le programme</a>
         </div>
       </div>
     </div>
@@ -1544,7 +1544,21 @@ var CONFIG = {
   SUPABASE_URL:  'https://hlczyaluhqrbrybaofjd.supabase.co',
   SUPABASE_KEY:  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImhsY3p5YWx1aHFyYnJ5YmFvZmpkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODM3NjM2MzIsImV4cCI6MjA5OTMzOTYzMn0.LAq3IgCOCJFsMQXxxHp8tmXa_amFMzZvgcSXAhz9-bY',
   TABLE:         'formation_candidatures',
-  EMAIL_CONTACT: 'contact@exemple.com'   /* [À REMPLIR] ton adresse email */
+  EMAIL_CONTACT: 'contact@exemple.com',  /* [À REMPLIR] ton adresse email */
+
+  /* ── Où envoyer le candidat une fois le questionnaire terminé ──
+     Colle ici l'adresse complète de la page d'arrivée (ta vidéo de
+     présentation, ton Calendly, ton Discord…) :
+
+       REDIRECT_URL: 'https://exemple.com/merci',
+
+     Laisse vide pour qu'il reste sur l'écran de confirmation du site.
+     La redirection ne part QUE si la candidature a bien été enregistrée :
+     en cas d'échec, il reste sur la page avec le repli par email.
+     REDIRECT_DELAI = le nombre de secondes d'affichage de la confirmation
+     avant le départ. Mets 0 pour partir tout de suite. */
+  REDIRECT_URL:   '',
+  REDIRECT_DELAI: 2
 };
 
 document.addEventListener('DOMContentLoaded', function () {
@@ -1854,6 +1868,23 @@ document.addEventListener('DOMContentLoaded', function () {
            '&body=' + encodeURIComponent(body);
   }
 
+  /* ── Envoi vers une autre page une fois la candidature enregistrée ──
+     Appelée uniquement après un enregistrement réussi. Si le navigateur
+     bloque le départ automatique, le lien manuel reste cliquable. */
+  function redirection() {
+    var url = (CONFIG.REDIRECT_URL || '').trim();
+    if (!url) return;
+
+    var delai = Math.max(0, Number(CONFIG.REDIRECT_DELAI) || 0) * 1000;
+    var zone  = document.getElementById('apply-next');
+    if (zone) {
+      zone.innerHTML =
+        '<p style="font-size:13.5px;color:#8a8680;margin-bottom:14px;">Redirection en cours…</p>' +
+        '<a class="btn btn-primary" href="' + url + '">Continuer</a>';
+    }
+    setTimeout(function () { window.location.href = url; }, delai);
+  }
+
   function loading(on) {
     btn.disabled = on;
     label.textContent = on ? 'Envoi en cours…' : 'Envoyer ma candidature';
@@ -1907,6 +1938,7 @@ document.addEventListener('DOMContentLoaded', function () {
       split.style.display = 'none';
       sent.classList.add('on');
       sent.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      redirection();
     })
     .catch(function (err) {
       console.error('Candidature — échec de l\'envoi :', err);
