@@ -36,7 +36,12 @@ Le site sort sur `https://<utilisateur>.github.io/accompagnement/`.
 
 ## 2. Recevoir les candidatures
 
-1. [supabase.com](https://supabase.com) → ton projet → **SQL Editor**
+Les candidatures sont stockées dans le projet Supabase **Valmont**
+(référence `hlczyaluhqrbrybaofjd`), partagé avec l'app du même nom. C'est un
+choix assumé : une seule base à surveiller. La table `formation_candidatures`
+lui est propre, rien n'est mélangé avec les données de l'app.
+
+1. [supabase.com](https://supabase.com) → projet **Valmont** → **SQL Editor**
 2. Colle le contenu de `supabase-schema.sql` → **Run**
 3. Les candidatures arrivent dans **Table Editor → `formation_candidatures`**
 
