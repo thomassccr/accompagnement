@@ -492,7 +492,7 @@ window.__phFallback = function (img, path) {
   .q-hint { font-size:13.5px; line-height:1.6; color:#8a8680; margin-top:10px; }
 
   /* ── Formulaire en 3 étapes ──
-     Un formulaire de 13 champs d'un bloc fait fuir ; découpé, chaque écran
+     Un formulaire d'une dizaine de champs d'un bloc fait fuir ; découpé, chaque écran
      paraît court et l'engagement se construit au fur et à mesure. */
   .steps-head { grid-column:1 / -1; margin-bottom:4px; }
   .steps-bar { height:3px; border-radius:2px; background:rgba(255,255,255,.08); overflow:hidden; }
@@ -946,7 +946,7 @@ window.__phFallback = function (img, path) {
 
         <div class="steps-head">
           <div class="steps-bar"><div class="steps-fill" id="steps-fill"></div></div>
-          <div class="steps-meta"><span class="steps-count" id="steps-count">1 / 13</span></div>
+          <div class="steps-meta"><span class="steps-count" id="steps-count">1 / 9</span></div>
         </div>
 
         <div class="step-pane on">
@@ -1069,59 +1069,6 @@ window.__phFallback = function (img, path) {
               <label class="opt"><input type="radio" name="disponibilite" value="Plus de 20 h"><span>Plus de 20 h par semaine</span></label>
             </div>
             <span class="err-msg">Sélectionne une réponse.</span>
-          </div>
-        </div>
-
-        <div class="step-pane">
-          <div class="q-head">
-            <h3 class="q-title">Tu veux en être où dans 6 mois ?</h3>
-            <p class="q-hint">Un objectif précis vaut mieux qu'un grand rêve. Deux lignes suffisent.</p>
-          </div>
-          <div class="fld full">
-            <label for="f-objectif">Ton objectif <span class="req">*</span></label>
-            <textarea id="f-objectif" name="objectif" placeholder="Ex. : valider un challenge FTMO 50k et sortir un premier retrait sans cramer le compte." required></textarea>
-            <span class="err-msg">Décris ton objectif en quelques mots.</span>
-          </div>
-        </div>
-
-        <div class="step-pane">
-          <div class="q-head">
-            <h3 class="q-title">Qu'est-ce qui te bloque le plus ?</h3>
-            <p class="q-hint">C'est la réponse que je lis en premier. Plus tu es franc, plus l'appel sert à quelque chose.</p>
-          </div>
-          <div class="fld full">
-            <label for="f-blocage">Ton blocage <span class="req">*</span></label>
-            <textarea id="f-blocage" name="blocage" placeholder="Discipline, gestion du risque, manque de méthode, gestion des émotions…" required></textarea>
-            <span class="err-msg">Dis-m'en un peu plus.</span>
-          </div>
-        </div>
-
-        <div class="step-pane">
-          <div class="q-head">
-            <h3 class="q-title">Quel format t'intéresse ?</h3>
-            <p class="q-hint">Rien n'est figé — on en reparle pendant l'appel.</p>
-          </div>
-          <div class="fld full">
-            <div class="opts" role="radiogroup" aria-label="Format">
-              <label class="opt"><input type="radio" name="format" value="Je ne sais pas encore"><span>Je ne sais pas encore</span></label>
-              <label class="opt"><input type="radio" name="format" value="Audit flash"><span>Audit flash</span></label>
-              <label class="opt"><input type="radio" name="format" value="Accompagnement 12 semaines"><span>Accompagnement 12 semaines</span></label>
-              <label class="opt"><input type="radio" name="format" value="Mentorat long terme"><span>Mentorat long terme</span></label>
-            </div>
-          </div>
-        </div>
-
-        <div class="step-pane">
-          <div class="q-head"><h3 class="q-title">Comment tu m'as connu ?</h3></div>
-          <div class="fld full">
-            <div class="opts" role="radiogroup" aria-label="Provenance">
-              <label class="opt"><input type="radio" name="source" value="Instagram"><span>Instagram</span></label>
-              <label class="opt"><input type="radio" name="source" value="TikTok"><span>TikTok</span></label>
-              <label class="opt"><input type="radio" name="source" value="YouTube"><span>YouTube</span></label>
-              <label class="opt"><input type="radio" name="source" value="Discord / Telegram"><span>Discord / Telegram</span></label>
-              <label class="opt"><input type="radio" name="source" value="Bouche à oreille"><span>Bouche à oreille</span></label>
-              <label class="opt"><input type="radio" name="source" value="Autre"><span>Autre</span></label>
-            </div>
           </div>
         </div>
 
@@ -1846,10 +1793,6 @@ document.addEventListener('DOMContentLoaded', function () {
       capital:       v('capital'),
       situation:     v('situation'),
       disponibilite: v('disponibilite'),
-      objectif:      v('objectif'),
-      blocage:       v('blocage'),
-      format:        v('format'),
-      source:        v('source'),
       page:          location.href
     };
   }
@@ -1859,9 +1802,8 @@ document.addEventListener('DOMContentLoaded', function () {
       'Prénom : ' + d.prenom + '\nNom : ' + d.nom + '\nEmail : ' + d.email +
       '\nTéléphone : ' + d.telephone + '\nRéseau : ' + d.reseau + '\nÂge : ' + d.age +
       '\n\nExpérience : ' + d.experience + '\nMarchés : ' + d.marches +
-      '\nCompte : ' + d.capital + '\nSituation : ' + d.situation + '\nDisponibilité : ' + d.disponibilite +
-      '\nFormat visé : ' + d.format + '\nSource : ' + d.source +
-      '\n\nObjectif :\n' + d.objectif + '\n\nBlocage :\n' + d.blocage + '\n';
+      '\nCompte : ' + d.capital + '\nSituation : ' + d.situation +
+      '\nDisponibilité : ' + d.disponibilite + '\n';
     return 'mailto:' + CONFIG.EMAIL_CONTACT +
            '?subject=' + encodeURIComponent('Candidature accompagnement — ' + d.prenom + ' ' + d.nom) +
            '&body=' + encodeURIComponent(body);

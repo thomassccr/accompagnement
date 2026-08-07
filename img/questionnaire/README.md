@@ -14,11 +14,7 @@ Une photo par étape, nommées dans l'ordre. Les noms doivent être exacts :
 06.jpg   Où en est ton compte ?
 07.jpg   Quelle est ta situation actuelle ?
 08.jpg   Combien de temps tu peux y consacrer ?
-09.jpg   Tu veux en être où dans 6 mois ?
-10.jpg   Qu'est-ce qui te bloque le plus ?
-11.jpg   Quel format t'intéresse ?
-12.jpg   Comment tu m'as connu ?
-13.jpg   Dernière étape
+09.jpg   Dernière étape
 ```
 
 ## Ce qu'il faut savoir
@@ -32,8 +28,8 @@ et l'image est recadrée au centre. Une photo verticale ou carrée passe bien ;
 une photo très large sera coupée sur les côtés.
 
 **Poids.** Vise moins de 500 Ko par photo. Le site n'en charge que deux à la
-fois (celle affichée et la suivante), mais treize photos de 2 Mo restent
-treize photos de 2 Mo pour qui remplit tout le formulaire.
+fois (celle affichée et la suivante), mais neuf photos de 2 Mo restent neuf
+photos de 2 Mo pour qui remplit tout le formulaire.
 
 **Le bord gauche de l'image est assombri** par un dégradé, pour que le
 formulaire reste lisible. Ne mets rien d'important à gauche de la photo.

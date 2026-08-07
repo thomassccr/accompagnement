@@ -23,13 +23,7 @@ create table if not exists public.formation_candidatures (
   capital       text          check (char_length(capital) <= 80),
   disponibilite text          check (char_length(disponibilite) <= 80),
 
-  -- Réponses libres
-  objectif      text          check (char_length(objectif) <= 2000),
-  blocage       text          check (char_length(blocage) <= 2000),
-
   -- Contexte
-  format        text          check (char_length(format) <= 80),
-  source        text          check (char_length(source) <= 80),
   page          text          check (char_length(page) <= 300),
 
   -- Ton suivi à toi (à éditer depuis le Table Editor de Supabase)
@@ -59,6 +53,15 @@ create policy "candidature publique"
 -- Exécute uniquement ces deux lignes, elles ne cassent rien :
 alter table public.formation_candidatures add column if not exists age text;
 alter table public.formation_candidatures add column if not exists situation text;
+
+-- ── Tu avais créé la table avant ? ──
+-- Elle contient encore les colonnes objectif, blocage, format et source :
+-- les questions correspondantes ont été retirées du formulaire, ces colonnes
+-- resteront simplement vides. Rien à faire, sauf si tu veux faire le ménage :
+--   alter table public.formation_candidatures drop column if exists objectif;
+--   alter table public.formation_candidatures drop column if exists blocage;
+--   alter table public.formation_candidatures drop column if exists format;
+--   alter table public.formation_candidatures drop column if exists source;
 
 -- ═══════════════════════════════════════════════════════════
 -- OPTIONNEL — recevoir un email à chaque candidature

@@ -53,7 +53,7 @@ l'ajout d'une ligne, et un service qui met en forme l'email. Compte 10 minutes, 
    - *To* : ton adresse
    - *Subject* : `Nouvelle candidature`
    - *Content* : tape ton texte et insère les champs depuis le panneau de droite,
-     ils apparaissent sous `record` (`record.prenom`, `record.email`, `record.objectif`…)
+     ils apparaissent sous `record` (`record.prenom`, `record.email`, `record.experience`…)
 5. En bas à gauche, bascule l'interrupteur du scénario sur **ON**
 
 **B. Brancher Supabase dessus**
@@ -86,15 +86,7 @@ webhook porte un autre numéro, remplace-le partout.
     <tr><td style="color:#888;">Marchés</td><td>{{1.record.marches}}</td></tr>
     <tr><td style="color:#888;">Compte</td><td>{{1.record.capital}}</td></tr>
     <tr><td style="color:#888;">Dispo</td><td>{{1.record.disponibilite}}</td></tr>
-    <tr><td style="color:#888;">Format visé</td><td>{{1.record.format}}</td></tr>
-    <tr><td style="color:#888;">Vient de</td><td>{{1.record.source}}</td></tr>
   </table>
-
-  <h3 style="margin:22px 0 4px;">Objectif à 6 mois</h3>
-  <p style="margin:0;white-space:pre-wrap;">{{1.record.objectif}}</p>
-
-  <h3 style="margin:22px 0 4px;">Ce qui le bloque</h3>
-  <p style="margin:0;white-space:pre-wrap;">{{1.record.blocage}}</p>
 </div>
 ```
 
@@ -118,7 +110,7 @@ Remplis une fausse candidature sur le site. L'email doit arriver dans la minute.
 n'arrive pas : Supabase → Webhooks → onglet des logs, le code de réponse y est affiché.
 
 Supabase envoie un objet JSON dont les réponses se trouvent dans `record`. Exemple :
-`record.prenom`, `record.age`, `record.experience`, `record.blocage`.
+`record.prenom`, `record.age`, `record.experience`, `record.disponibilite`.
 
 ## 3. Personnaliser le contenu
 
