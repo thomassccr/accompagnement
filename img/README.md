@@ -14,9 +14,12 @@ En place — ailleurs :
 - explication.jpg         Section 4, visuel à droite de la liste.
                           Une capture de ton journal, d'un graphique annoté
                           ou de ton tableau de bord.
-- avant-1.jpg             Section 7, photo « avant » n°1
-- avant-2.jpg             Section 7, photo « avant » n°2
-                          Format vertical, elles s'affichent légèrement inclinées.
+- avant-1.jpg             Section 7, photo de gauche
+- avant-2.jpg             Section 7, photo de droite
+                          Format vertical, affichées légèrement inclinées et
+                          recadrées en 3/4. Une légende courte s'affiche sous
+                          chacune : elle se modifie dans index.html, section
+                          « parcours », balises <figcaption>.
 - coach.jpg               Ton portrait (optionnel, bloc actuellement retiré)
 
 Section 8 — bandeau « Résultats récents », défilement continu :
