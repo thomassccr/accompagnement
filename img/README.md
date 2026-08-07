@@ -7,8 +7,14 @@ En place — section 3, rangée de preuves :
 - historique.jpg          Historique des trades, +1 004,17 $
 
 En place — ailleurs :
-- setup.jpg               Le poste de trading (hero et panneau du questionnaire)
+- logo.png                L'icône de l'onglet du navigateur (favicon).
+                          C'est un redessin approximatif de ton logo : remplace
+                          ce fichier par ton vrai export, en gardant le nom
+                          logo.png. Carré, fond opaque, 512x512 de préférence.
+- setup.jpg               Le poste de trading (hero et repli du questionnaire)
 - positions.jpg           Positions US100 en cours (non utilisée pour l'instant)
+
+Le questionnaire a son propre dossier : voir img/questionnaire/README.md.
 
 À fournir :
 - explication.jpg         Section 4, visuel à droite de la liste.
